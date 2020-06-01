@@ -142,69 +142,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-test-image" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/01/test-image/">test_image</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/01/test-image/" class="archive-article-date">
-  	<time datetime="2020-06-01T14:39:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/2020/06/01/test-image/BAI_Zheyuan.png" alt></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/01/test-image/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-GSOC-Bonding-period" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -225,7 +162,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>The bonding period<br><img src="/2020/06/01/GSOC-Bonding-period/BAI_Zheyuan.png" alt></p>
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The bonding period has been formally ended(from 4th May to 31st May), and the coding perio begins.</p>
+<p>In this report, I will present some of my thoughts during this period as well as my decision on the direction of next 3 months’ research and development.</p>
+<h2 id="About-Neural-QA-and-NSpM-1"><a href="#About-Neural-QA-and-NSpM-1" class="headerlink" title="About Neural-QA and NSpM[1]"></a>About Neural-QA and NSpM[1]</h2><p>Our neural QA system is principally based on the project <a href="https://github.com/AKSW/NSpM" target="_blank" rel="noopener">NSpM</a>, which uses the query-question template and the LSTB based <a href="https://github.com/tensorflow/nmt/tree/0be864257a76c151eef20ea689755f08bc1faf4e" target="_blank" rel="noopener">NMT model</a>.</p>
+<p>The manual generation of templates aims to use the least human effort to generate training dataset, instead of using further human work like LC-QuAD. The training data, which are NL questions and SPARQL pairs, will be learned as a Machine Translation problem by the NMT model.</p>
+<h2 id="Direction-of-research-and-development"><a href="#Direction-of-research-and-development" class="headerlink" title="Direction of research and development"></a>Direction of research and development</h2><p>I’ve gone through several papers, and I have finally made my decision to work on the question coverage problem using NL generation(probably other methods). I case that we could not have a meeting these days I am going to list some of my arguments and doubts here:<br>I’m going to define our NSpM system as a Restricted-domain QA system, as we are training and test on a relatively restricted dataset, like Monument, Person, etc. The compositional problem would be different from an Open-domain QA system(like Stuart’s work and the papers referenced in his github page), and I think our main problem would be the composition of templates and the coverage of utterance. The former has already been solved by Anand so I would be rather working on the latter.<br>As our template-query pair set is manually created, the NL queries generated will be syntactically isomorphic(they have the same syntax)[2]. I think the level of utterance coverage could be improved by adding more syntactic variablility with NL generation(the main idea is already discussed in my proposal), which could also impove the semantic variability. The main concern here is that this process will cost a lot of time if we use it on all the templates even in restricted-domain of dataset, and here are two possible ideas which can more or less alleviate the time-consuming problem:</p>
+<blockquote>
+<ol>
+<li>Process NL generation only on simple templates, and let them be composed to “spread” into compositional templates</li>
+<li>Process NL generation only on top-ranked templates</li>
+</ol>
+</blockquote>
+<p>The first point makes better sense to my mentor Tommaso and to me.<br>For other aspects, in keeping the RNN-LSTM model, another NMT model with CNN should be an alternative option, as it is proved to be outperforming[3] in NL2SPARQL missions.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Tommaso Soru, Edgard Marx, André Valdestilhas, Diego Esteves, Diego Moussallem, Gustavo Publio. (2018). Neural Machine Translation for Query Construction and Composition.</p>
+<p>[2] Abdalghani Abujabal et al. (2018) Never-Ending Learning for Open-Domain Question Answering over Knowledge Bases</p>
+<p>[3] Xiaoyu Yin et al. (2019) Neural Machine Translating from Natural Language to SPARQL</p>
 
       
 
