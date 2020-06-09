@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Archives | Zheyuan BAI&#39;s Blog</title>
+  <title>GSOC-Week-One | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:url" content="http://baiblanc.github.io/archives/index.html">
+  <meta name="description" content="IntroductionAfter last meeting(held on every Thursday), I have gone through several approaches of template expansion(Paraphrase generation).  Template ExpansionWe should differentiate between Template">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSOC-Week-One">
+<meta property="og:url" content="http://baiblanc.github.io/2020/06/07/GSOC-Week-One/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
+<meta property="og:description" content="IntroductionAfter last meeting(held on every Thursday), I have gone through several approaches of template expansion(Paraphrase generation).  Template ExpansionWe should differentiate between Template">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://baiblanc.github.io/2020/06/07/GSOC-Week-One/pipeline.jpg">
+<meta property="article:published_time" content="2020-06-07T16:53:43.000Z">
+<meta property="article:modified_time" content="2020-06-09T21:39:25.688Z">
 <meta property="article:author" content="Zheyuan BAI">
+<meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baiblanc.github.io/2020/06/07/GSOC-Week-One/pipeline.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Zheyuan BAI&#39;s Blog" type="application/atom+xml">
   
@@ -140,36 +147,88 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-GSOC-Week-One" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      GSOC-Week-One
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/07/GSOC-Week-One/" class="archive-article-date">
+
+        
+        <a href="/2020/06/07/GSOC-Week-One/" class="archive-article-date">
   	<time datetime="2020-06-07T16:53:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-07</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/07/GSOC-Week-One/">GSOC-Week-One</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>After last meeting(held on every Thursday), I have gone through several approaches of template expansion(Paraphrase generation).</p>
+<blockquote>
+<h4 id="Template-Expansion"><a href="#Template-Expansion" class="headerlink" title="Template Expansion"></a>Template Expansion</h4><p>We should differentiate between <em>Template Expansion</em> (what we’re focussing on) and <em>Template Generation</em>, i.e. completely new questions for which we need to build also the corresponding SPARQL query.<br>The expected output would be a paraphrase of the original template. </p>
+<h4 id="Paraphrases"><a href="#Paraphrases" class="headerlink" title="Paraphrases"></a>Paraphrases</h4><p>Paraphrases are sequences that convey the same meaning but using different wording. Paraphrasing exists at different granularity levels, such as lexical level, phrasal level and sentential level.</p>
+</blockquote>
+<p>Although most of the papers don’t publish their source code, I’ve made a list for those whose implementation is open-sourced:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Title</th>
+<th align="center">Paper</th>
+<th align="center">Code source and Implementation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-</td>
+<td align="center"><a href="https://arxiv.org/pdf/1709.05074.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1709.05074.pdf</a></td>
+<td align="center"><a href="https://github.com/kefirski/pytorch_RVAE" target="_blank" rel="noopener">https://github.com/kefirski/pytorch_RVAE</a></td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a href="https://github.com/vsuthichai/paraphraser" target="_blank" rel="noopener">https://github.com/vsuthichai/paraphraser</a></td>
+</tr>
+<tr>
+<td align="center">Neural Syntactic Preordering for Controlled Paraphrase Generation</td>
+<td align="center"><a href="https://arxiv.org/pdf/2005.02013v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2005.02013v1.pdf</a></td>
+<td align="center"><a href="https://github.com/tagoyal/sow-reap-paraphrasing" target="_blank" rel="noopener">https://github.com/tagoyal/sow-reap-paraphrasing</a></td>
+</tr>
+<tr>
+<td align="center">Decomposable Neural Paraphrase Generation</td>
+<td align="center"><a href="https://www.aclweb.org/anthology/P19-1332.pdf" target="_blank" rel="noopener">https://www.aclweb.org/anthology/P19-1332.pdf</a></td>
+<td align="center">—-</td>
+</tr>
+<tr>
+<td align="center">Syntax-guided Controlled Generation of Paraphrases</td>
+<td align="center"><a href="https://arxiv.org/pdf/2005.08417v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2005.08417v1.pdf</a></td>
+<td align="center"><a href="https://github.com/malllabiisc/SGCP" target="_blank" rel="noopener">https://github.com/malllabiisc/SGCP</a></td>
+</tr>
+<tr>
+<td align="center">Paraphrase Generation with Latent Bag of Words</td>
+<td align="center"><a href="https://arxiv.org/pdf/2001.01941v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2001.01941v1.pdf</a></td>
+<td align="center"><a href="https://github.com/FranxYao/dgm_latent_bow" target="_blank" rel="noopener">https://github.com/FranxYao/dgm_latent_bow</a></td>
+</tr>
+<tr>
+<td align="center">T5 model</td>
+<td align="center"><a href="https://arxiv.org/pdf/2002.08910.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2002.08910.pdf</a></td>
+<td align="center"><a href="https://github.com/ramsrigouthamg/Paraphrase-any-question-with-T5-Text-To-Text-Transfer-Transformer-" target="_blank" rel="noopener">https://github.com/ramsrigouthamg/Paraphrase-any-question-with-T5-Text-To-Text-Transfer-Transformer-</a></td>
+</tr>
+</tbody></table>
+<p>Among all, the last T5 model has the best instruction of implementation and seems to match our need, so we will start our Template Expansion task with this model.</p>
+<h2 id="Pipeline-of-Template-Expansion"><a href="#Pipeline-of-Template-Expansion" class="headerlink" title="Pipeline of Template Expansion"></a>Pipeline of Template Expansion</h2><p><img src="/2020/06/07/GSOC-Week-One/pipeline.jpg" alt><font size="2">Figure1: New question template will be generated by our Paraphrase Model and hopefully be matched with the same Query template</font></p>
+<h4 id="Evaluation-of-the-quality"><a href="#Evaluation-of-the-quality" class="headerlink" title="Evaluation of the quality"></a>Evaluation of the quality</h4><p>We should first of all ensure that the paraphrase of question template have the same meaning with the original one, this could be done with <em>Universal Sentence Encoder</em>, which could help us compute sentence<br>level semantic similarity scores.</p>
+<p>Secondly, we should ensure that the syntax similarity should be low as we expect very different question structures. To be noted, we are not looking for synonymes as those will be handled by replacing internal with global Word Embeddings.<br>This difference of syntax could be evaluated with <a href="https://en.wikipedia.org/wiki/Levenshtein_distance" target="_blank" rel="noopener">Levenshtein distance</a>, or other possible metrics.</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -181,122 +240,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/06/07/GSOC-Week-One/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/01/GSOC-Bonding-period/" class="archive-article-date">
-  	<time datetime="2020-06-01T12:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/06/01/GSOC-Bonding-period/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GSOC Bonding period</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/01/GSOC-Bonding-period/">GSOC Bonding period</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/09/Hello-Gsoc/" class="archive-article-date">
-  	<time datetime="2020-05-08T22:07:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/09/Hello-Gsoc/">Hello GSOC and my First Meeting</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/07/hello-world/" class="archive-article-date">
-  	<time datetime="2020-05-07T17:53:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/07/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -319,8 +362,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
