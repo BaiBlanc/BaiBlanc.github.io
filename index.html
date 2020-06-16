@@ -216,6 +216,11 @@
 </tbody>
 </table>
 </div>
+<p>Our current pipeline is composed like this:</p>
+<blockquote>
+<p>Anand’s pipeline —&gt; Paraphraser+USE —&gt; NSpM Generator</p>
+</blockquote>
+<p>Except for NSpM Generator, other parts (Anand’s pipeline, Paraphraser, USE) could all be replaced or cooperated with other approaches.<br>For example, if we need more simple templates, we could make use of Stuart’s pipeline in determining the proper Entity Names (like the top N ranked entities in the specific Ontology). In this case, we may not need the Paraphraser as the template set is already expanded.<br>Another example, USE could be replaced by the pre-trained Hidden layer of BERT, as USE seems to ignore the order of the word in a sentence. <a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">Bert-as-service</a> is available for example, and there are a lot of variant of BERT which gives better sentence embeddings.</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Daniel Cera, Yinfei Yanga, Sheng-yi Kong et al. (2018.4). Universal Sentence Encoder</p>
 
       
