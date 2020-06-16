@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
@@ -32,10 +32,10 @@
 
   
 
-<meta name="generator" content="Hexo 4.2.0"></head>
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body>
-  <div id="container" q-class="show:isCtnShow">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
@@ -142,6 +142,128 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Two" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/12/GSOC-Week-Two/">GSOC-Week-Two</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/12/GSOC-Week-Two/" class="archive-article-date">
+  	<time datetime="2020-06-12T20:14:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This week, I’ve finally started my coding works(commits and merges to the community).<br>Based on Anand’s work, I’ve created my pipeline and added the Paraphraser to it, this work will be briefly introduced in the first part.<br>I’ve also concluded some of the available resources that correspond to our Template Expansion idea, which is presented in the second part of the blog.</p>
+<h2 id="Creation-of-pipeline"><a href="#Creation-of-pipeline" class="headerlink" title="Creation of pipeline"></a>Creation of pipeline</h2><p>The whole pipeline is based on Anand’s pieline3, which get resources from DBpedia and generates the original template set.<br>My pipeline adds a Paraphraser before the stockage of templates, this Paraphraser could be different Paraphrase Generation models or even other approaches, for instance, we use T5 pre-trained model.<br>The pipeline then evaluates the generated paraphrases(candidates) and determines whether to expand, replace or abandon the original template.</p>
+<h3 id="Paraphraser"><a href="#Paraphraser" class="headerlink" title="Paraphraser"></a>Paraphraser</h3><p>After the creation of templates and the elimination of the never asked queries, the questions will be passed to the Paraphraser.</p>
+<ul>
+<li><code>paraphrase_questions.py</code>: This aims to paraphrase the question template and return several possible candidates with their scores (potentially textual similarity, POS taggings, etc.). The main pipeline will select the templates with a strategy and add it/them to the template set.</li>
+<li><code>textual_similarity.py</code>: This aims to calculate the scores of similarity between the candidates and the original question template.</li>
+</ul>
+<p>To test the Paraphraser:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python paraphrase_questions.py --sentence <span class="string">"what is your name ?"</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Other-Semantic-similarity"><a href="#Other-Semantic-similarity" class="headerlink" title="Other Semantic similarity:"></a>Other Semantic similarity:</h4><p>Besides the cosine similarity and the edit distance(levenshtein distance) mentioned in <a href="https://baiblanc.github.io/2020/06/07/GSOC-Week-One/">last week’s blog</a>, an advanced semantic similarity could also be used. </p>
+<script type="math/tex; mode=display">similarity(u,v) = (1-\frac{arccos(\frac{u*v}{|u|*|v|})}{π})</script><p>As the paper “Universal Sentence Encoder”[1] proposed, they found that using a similarity based on angular distance performs better on average than raw cosine similarity.<br>I’ve also done some tests and found that this advanced semantic similarity seems more reasonable when the two sentences are similar, but when the two sentences are totally different semantically, this advanced approach will still give a relatively high score: 0.6(advanced) vs 0.3(cosine) </p>
+<h2 id="Insights-on-available-resources"><a href="#Insights-on-available-resources" class="headerlink" title="Insights on available resources"></a>Insights on available resources</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Resource</th>
+<th style="text-align:center">Input</th>
+<th style="text-align:center">Output</th>
+<th style="text-align:center">Main idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">NSpM Generator</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">NL2Sparql data set</td>
+<td style="text-align:center">Replacing the placeholder with concerned labels</td>
+</tr>
+<tr>
+<td style="text-align:center">Anand’s pipeline</td>
+<td style="text-align:center">Ontology name(from DBpedia)</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">Rule-based</td>
+</tr>
+<tr>
+<td style="text-align:center">Stuart’s pipeline</td>
+<td style="text-align:center">Entity name(from wiki pages)</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">POS-tagging + Rule-based</td>
+</tr>
+<tr>
+<td style="text-align:center">Paraphraser</td>
+<td style="text-align:center">NL template</td>
+<td style="text-align:center">Paraphrased NL template</td>
+<td style="text-align:center">Paraphrase Generation model</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Daniel Cera, Yinfei Yanga, Sheng-yi Kong et al. (2018.4). Universal Sentence Encoder</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/12/GSOC-Week-Two/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-One" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -168,50 +290,54 @@
 <h4 id="Paraphrases"><a href="#Paraphrases" class="headerlink" title="Paraphrases"></a>Paraphrases</h4><p>Paraphrases are sequences that convey the same meaning but using different wording. Paraphrasing exists at different granularity levels, such as lexical level, phrasal level and sentential level.</p>
 </blockquote>
 <p>Although most of the papers don’t publish their source code, I’ve made a list for those whose implementation is open-sourced:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">Title</th>
-<th align="center">Paper</th>
-<th align="center">Code source and Implementation</th>
+<th style="text-align:center">Title</th>
+<th style="text-align:center">Paper</th>
+<th style="text-align:center">Code source and Implementation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">-</td>
-<td align="center"><a href="https://arxiv.org/pdf/1709.05074.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1709.05074.pdf</a></td>
-<td align="center"><a href="https://github.com/kefirski/pytorch_RVAE" target="_blank" rel="noopener">https://github.com/kefirski/pytorch_RVAE</a></td>
+<tbody>
+<tr>
+<td style="text-align:center">-</td>
+<td style="text-align:center"><a href="https://arxiv.org/pdf/1709.05074.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1709.05074.pdf</a></td>
+<td style="text-align:center"><a href="https://github.com/kefirski/pytorch_RVAE" target="_blank" rel="noopener">https://github.com/kefirski/pytorch_RVAE</a></td>
 </tr>
 <tr>
-<td align="center">-</td>
-<td align="center">-</td>
-<td align="center"><a href="https://github.com/vsuthichai/paraphraser" target="_blank" rel="noopener">https://github.com/vsuthichai/paraphraser</a></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"><a href="https://github.com/vsuthichai/paraphraser" target="_blank" rel="noopener">https://github.com/vsuthichai/paraphraser</a></td>
 </tr>
 <tr>
-<td align="center">Neural Syntactic Preordering for Controlled Paraphrase Generation</td>
-<td align="center"><a href="https://arxiv.org/pdf/2005.02013v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2005.02013v1.pdf</a></td>
-<td align="center"><a href="https://github.com/tagoyal/sow-reap-paraphrasing" target="_blank" rel="noopener">https://github.com/tagoyal/sow-reap-paraphrasing</a></td>
+<td style="text-align:center">Neural Syntactic Preordering for Controlled Paraphrase Generation</td>
+<td style="text-align:center"><a href="https://arxiv.org/pdf/2005.02013v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2005.02013v1.pdf</a></td>
+<td style="text-align:center"><a href="https://github.com/tagoyal/sow-reap-paraphrasing" target="_blank" rel="noopener">https://github.com/tagoyal/sow-reap-paraphrasing</a></td>
 </tr>
 <tr>
-<td align="center">Decomposable Neural Paraphrase Generation</td>
-<td align="center"><a href="https://www.aclweb.org/anthology/P19-1332.pdf" target="_blank" rel="noopener">https://www.aclweb.org/anthology/P19-1332.pdf</a></td>
-<td align="center">—-</td>
+<td style="text-align:center">Decomposable Neural Paraphrase Generation</td>
+<td style="text-align:center"><a href="https://www.aclweb.org/anthology/P19-1332.pdf" target="_blank" rel="noopener">https://www.aclweb.org/anthology/P19-1332.pdf</a></td>
+<td style="text-align:center">——</td>
 </tr>
 <tr>
-<td align="center">Syntax-guided Controlled Generation of Paraphrases</td>
-<td align="center"><a href="https://arxiv.org/pdf/2005.08417v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2005.08417v1.pdf</a></td>
-<td align="center"><a href="https://github.com/malllabiisc/SGCP" target="_blank" rel="noopener">https://github.com/malllabiisc/SGCP</a></td>
+<td style="text-align:center">Syntax-guided Controlled Generation of Paraphrases</td>
+<td style="text-align:center"><a href="https://arxiv.org/pdf/2005.08417v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2005.08417v1.pdf</a></td>
+<td style="text-align:center"><a href="https://github.com/malllabiisc/SGCP" target="_blank" rel="noopener">https://github.com/malllabiisc/SGCP</a></td>
 </tr>
 <tr>
-<td align="center">Paraphrase Generation with Latent Bag of Words</td>
-<td align="center"><a href="https://arxiv.org/pdf/2001.01941v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2001.01941v1.pdf</a></td>
-<td align="center"><a href="https://github.com/FranxYao/dgm_latent_bow" target="_blank" rel="noopener">https://github.com/FranxYao/dgm_latent_bow</a></td>
+<td style="text-align:center">Paraphrase Generation with Latent Bag of Words</td>
+<td style="text-align:center"><a href="https://arxiv.org/pdf/2001.01941v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2001.01941v1.pdf</a></td>
+<td style="text-align:center"><a href="https://github.com/FranxYao/dgm_latent_bow" target="_blank" rel="noopener">https://github.com/FranxYao/dgm_latent_bow</a></td>
 </tr>
 <tr>
-<td align="center">T5 model</td>
-<td align="center"><a href="https://arxiv.org/pdf/2002.08910.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2002.08910.pdf</a></td>
-<td align="center"><a href="https://github.com/ramsrigouthamg/Paraphrase-any-question-with-T5-Text-To-Text-Transfer-Transformer-" target="_blank" rel="noopener">https://github.com/ramsrigouthamg/Paraphrase-any-question-with-T5-Text-To-Text-Transfer-Transformer-</a></td>
+<td style="text-align:center">T5 model</td>
+<td style="text-align:center"><a href="https://arxiv.org/pdf/2002.08910.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/2002.08910.pdf</a></td>
+<td style="text-align:center"><a href="https://github.com/ramsrigouthamg/Paraphrase-any-question-with-T5-Text-To-Text-Transfer-Transformer-" target="_blank" rel="noopener">https://github.com/ramsrigouthamg/Paraphrase-any-question-with-T5-Text-To-Text-Transfer-Transformer-</a></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>Among all, the last T5 model(proposed by my mentor Tommaso) has the best instruction of implementation and seems to match our need, so we will start our Template Expansion task with this model.</p>
 <h2 id="Pipeline-of-Template-Expansion"><a href="#Pipeline-of-Template-Expansion" class="headerlink" title="Pipeline of Template Expansion"></a>Pipeline of Template Expansion</h2><p><img src="/2020/06/07/GSOC-Week-One/pipeline.jpg" alt><font size="2">Figure1: New question template will be generated by our Paraphrase Model and hopefully be matched with the same Query template</font></p>
 <h4 id="Evaluation-of-the-quality"><a href="#Evaluation-of-the-quality" class="headerlink" title="Evaluation of the quality"></a>Evaluation of the quality</h4><p>We should first of all ensure that the paraphrase of question template have the same meaning with the original one, this could be done with <em>Universal Sentence Encoder</em>, which could help us compute sentence level semantic similarity scores.<br>Here are some results of the preliminary experiments realized with the pre-trained T5 model and the metric Cosine similarity:</p>
@@ -466,16 +592,12 @@
       
         <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
 <p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
       
@@ -734,6 +856,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     </div>
 
 </div>
-  </div>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 </body>
 </html>

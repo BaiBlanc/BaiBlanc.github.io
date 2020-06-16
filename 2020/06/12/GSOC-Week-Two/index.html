@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Hello GSOC and my First Meeting | Zheyuan BAI&#39;s Blog</title>
+  <title>GSOC-Week-Two | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="My first GSOC JourneyHi everyone, I am Zheyuan BAI.I’m so glad to annouce that my proposal have been accepted by the community DBpedia for the 2020 GSOC project A Neural QA Model for DBpedia: Composit">
+  <meta name="description" content="IntroductionThis week, I’ve finally started my coding works(commits and merges to the community).Based on Anand’s work, I’ve created my pipeline and added the Paraphraser to it, this work will be brie">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello GSOC and my First Meeting">
-<meta property="og:url" content="http://baiblanc.github.io/2020/05/09/Hello-Gsoc/index.html">
+<meta property="og:title" content="GSOC-Week-Two">
+<meta property="og:url" content="http://baiblanc.github.io/2020/06/12/GSOC-Week-Two/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:description" content="My first GSOC JourneyHi everyone, I am Zheyuan BAI.I’m so glad to annouce that my proposal have been accepted by the community DBpedia for the 2020 GSOC project A Neural QA Model for DBpedia: Composit">
+<meta property="og:description" content="IntroductionThis week, I’ve finally started my coding works(commits and merges to the community).Based on Anand’s work, I’ve created my pipeline and added the Paraphraser to it, this work will be brie">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-08T22:07:42.000Z">
-<meta property="article:modified_time" content="2020-05-09T15:14:13.000Z">
+<meta property="article:published_time" content="2020-06-12T20:14:42.000Z">
+<meta property="article:modified_time" content="2020-06-16T18:50:45.017Z">
 <meta property="article:author" content="Zheyuan BAI">
 <meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
@@ -145,28 +145,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Hello-Gsoc" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-GSOC-Week-Two" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello GSOC and my First Meeting
+      GSOC-Week-Two
     </h1>
   
 
         
-        <a href="/2020/05/09/Hello-Gsoc/" class="archive-article-date">
-  	<time datetime="2020-05-08T22:07:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-09</time>
+        <a href="/2020/06/12/GSOC-Week-Two/" class="archive-article-date">
+  	<time datetime="2020-06-12T20:14:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-12</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="My-first-GSOC-Journey"><a href="#My-first-GSOC-Journey" class="headerlink" title="My first GSOC Journey"></a>My first GSOC Journey</h2><p>Hi everyone, I am Zheyuan BAI.<br>I’m so glad to annouce that <a href="https://drive.google.com/file/d/1ttHJu91fT6HLlHvHeQqdG35Cfy1ISIRv/view?usp=sharing" target="_blank" rel="noopener">my proposal</a> have been accepted by the community DBpedia for the 2020 GSOC project <strong>A Neural QA Model for DBpedia: Compositionality</strong> on 4th May.<br>This will be my first journey of GSOC and my first experience working on an opensource project. I’m very excited to be on board because the subject of this project corresponds perfectly what I am interested to do: building linked-data to make information exchange more efficient and valuable. I think this will be a good start.</p>
-<h2 id="My-First-Meeting-and-Looking-to-the-Future"><a href="#My-First-Meeting-and-Looking-to-the-Future" class="headerlink" title="My First Meeting and Looking to the Future"></a>My First Meeting and Looking to the Future</h2><p>On 8th May, scheduled at 15:00 UTC+2, I had my first meeting with my mentor Tommaso Soru and one of my co-mentors Anand Panchbhai, unfortunatly another co-mentor Jayakrishna Sahit didn’t make to join us.<br>During this first meeting, we have done self-introduciton and looked a little bit to the next few months. The concern of what I’ve planned in my proposal is that, it involves too much, I ‘m supposed to select and be focusing on less ideas which will be more faisible in a limited period(3 months) and my working result will beeasier to be delivered at last. To help me out with this situation, Tommaso suggested me to read more papers, like the refereced ones in his paper.<br>I am so glad to know my mentors and I hope that we will know each other better during this bonding period and I will have a great journey of GSOC in this summer!</p>
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This week, I’ve finally started my coding works(commits and merges to the community).<br>Based on Anand’s work, I’ve created my pipeline and added the Paraphraser to it, this work will be briefly introduced in the first part.<br>I’ve also concluded some of the available resources that correspond to our Template Expansion idea, which is presented in the second part of the blog.</p>
+<h2 id="Creation-of-pipeline"><a href="#Creation-of-pipeline" class="headerlink" title="Creation of pipeline"></a>Creation of pipeline</h2><p>The whole pipeline is based on Anand’s pieline3, which get resources from DBpedia and generates the original template set.<br>My pipeline adds a Paraphraser before the stockage of templates, this Paraphraser could be different Paraphrase Generation models or even other approaches, for instance, we use T5 pre-trained model.<br>The pipeline then evaluates the generated paraphrases(candidates) and determines whether to expand, replace or abandon the original template.</p>
+<h3 id="Paraphraser"><a href="#Paraphraser" class="headerlink" title="Paraphraser"></a>Paraphraser</h3><p>After the creation of templates and the elimination of the never asked queries, the questions will be passed to the Paraphraser.</p>
+<ul>
+<li><code>paraphrase_questions.py</code>: This aims to paraphrase the question template and return several possible candidates with their scores (potentially textual similarity, POS taggings, etc.). The main pipeline will select the templates with a strategy and add it/them to the template set.</li>
+<li><code>textual_similarity.py</code>: This aims to calculate the scores of similarity between the candidates and the original question template.</li>
+</ul>
+<p>To test the Paraphraser:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python paraphrase_questions.py --sentence <span class="string">"what is your name ?"</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Other-Semantic-similarity"><a href="#Other-Semantic-similarity" class="headerlink" title="Other Semantic similarity:"></a>Other Semantic similarity:</h4><p>Besides the cosine similarity and the edit distance(levenshtein distance) mentioned in <a href="https://baiblanc.github.io/2020/06/07/GSOC-Week-One/">last week’s blog</a>, an advanced semantic similarity could also be used. </p>
+<script type="math/tex; mode=display">similarity(u,v) = (1-\frac{arccos(\frac{u*v}{|u|*|v|})}{π})</script><p>As the paper “Universal Sentence Encoder”[1] proposed, they found that using a similarity based on angular distance performs better on average than raw cosine similarity.<br>I’ve also done some tests and found that this advanced semantic similarity seems more reasonable when the two sentences are similar, but when the two sentences are totally different semantically, this advanced approach will still give a relatively high score: 0.6(advanced) vs 0.3(cosine) </p>
+<h2 id="Insights-on-available-resources"><a href="#Insights-on-available-resources" class="headerlink" title="Insights on available resources"></a>Insights on available resources</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Resource</th>
+<th style="text-align:center">Input</th>
+<th style="text-align:center">Output</th>
+<th style="text-align:center">Main idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">NSpM Generator</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">NL2Sparql data set</td>
+<td style="text-align:center">Replacing the placeholder with concerned labels</td>
+</tr>
+<tr>
+<td style="text-align:center">Anand’s pipeline</td>
+<td style="text-align:center">Ontology name(from DBpedia)</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">Rule-based</td>
+</tr>
+<tr>
+<td style="text-align:center">Stuart’s pipeline</td>
+<td style="text-align:center">Entity name(from wiki pages)</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">POS-tagging + Rule-based</td>
+</tr>
+<tr>
+<td style="text-align:center">Paraphraser</td>
+<td style="text-align:center">NL template</td>
+<td style="text-align:center">Paraphrased NL template</td>
+<td style="text-align:center">Paraphrase Generation model</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Daniel Cera, Yinfei Yanga, Sheng-yi Kong et al. (2018.4). Universal Sentence Encoder</p>
 
       
 
@@ -236,7 +283,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/05/09/Hello-Gsoc/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/06/12/GSOC-Week-Two/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -250,18 +297,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/06/01/GSOC-Bonding-period/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          GSOC Bonding period
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/05/07/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2020/06/07/GSOC-Week-One/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GSOC-Week-One</div>
       <i class="icon-circle-right"></i>
     </a>
   
