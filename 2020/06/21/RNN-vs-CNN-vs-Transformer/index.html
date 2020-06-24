@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Archives: 2020/6 | Zheyuan BAI&#39;s Blog</title>
+  <title>RNN vs CNN vs Transformer | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:url" content="http://baiblanc.github.io/archives/2020/06/index.html">
+  <meta name="description" content="IntroductionI’ve been working on an open-source project: NSpM on Question Answering system with DBpedia. As the Interpretor part, which means the translation from a natural language question to a form">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RNN vs CNN vs Transformer">
+<meta property="og:url" content="http://baiblanc.github.io/2020/06/21/RNN-vs-CNN-vs-Transformer/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
+<meta property="og:description" content="IntroductionI’ve been working on an open-source project: NSpM on Question Answering system with DBpedia. As the Interpretor part, which means the translation from a natural language question to a form">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://baiblanc.github.io/2020/06/21/RNN-vs-CNN-vs-Transformer/transformer.png">
+<meta property="article:published_time" content="2020-06-21T13:27:57.000Z">
+<meta property="article:modified_time" content="2020-06-21T20:09:33.027Z">
 <meta property="article:author" content="Zheyuan BAI">
+<meta property="article:tag" content="nlp">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baiblanc.github.io/2020/06/21/RNN-vs-CNN-vs-Transformer/transformer.png">
   
     <link rel="alternative" href="/atom.xml" title="Zheyuan BAI&#39;s Blog" type="application/atom+xml">
   
@@ -146,74 +153,57 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-RNN-vs-CNN-vs-Transformer" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/23/GSOC-Week-Three/" class="archive-article-date">
-  	<time datetime="2020-06-23T15:37:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/23/GSOC-Week-Three/">GSOC-Week-Three</a>
+    <h1 class="article-title" itemprop="name">
+      RNN vs CNN vs Transformer
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/21/RNN-vs-CNN-vs-Transformer/" class="archive-article-date">
+        
+        <a href="/2020/06/21/RNN-vs-CNN-vs-Transformer/" class="archive-article-date">
   	<time datetime="2020-06-21T13:27:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/21/RNN-vs-CNN-vs-Transformer/">RNN vs CNN vs Transformer</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>I’ve been working on an open-source project: <a href="https://github.com/BaiBlanc/neural-qa" target="_blank" rel="noopener">NSpM</a> on Question Answering system with DBpedia. As the Interpretor part, which means the translation from a <em>natural language question</em> to a <em>formal query</em>(SPARQL) is considered as a Machine Translation task, so in this blog, I will talk about the three largely used bases of the seq2seq model, RNN, CNN and Transformer.</p>
+<h1 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h1><p>The dominant approach in NLP, which are still very popular to date, is to use a series of bi-directional recurrent neural networks (RNN) to encode the input sequence and to generate(decode) a squence of output. This recurrent approach matches the natual way of our brain to read one word after another.<br>RNN (bi-LSTM) is currently used as our based NMT model for NSpM. RNN is one of the dominant approach used in NLP, it uses a series of recurrent of neural units to encode the input sequence into a context vector. </p>
+<h3 id="Soltions-of-handling-long-sequences"><a href="#Soltions-of-handling-long-sequences" class="headerlink" title="Soltions of handling long sequences"></a>Soltions of handling long sequences</h3><p>The main constraint for a recurrent model is its capacity of handling long sequences. I will present briefly two principle solutions to address the problem.</p>
+<h4 id="Attention"><a href="#Attention" class="headerlink" title="Attention"></a>Attention</h4><p>As the use of a fixed-length context vector is problematic for translating long sentences, the attention mechanism is introduced, which dynamically calculate the context vector at the phase of decoding based on all the hidden states.</p>
+<h4 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h4><p>While the basic version of RNN model struggles with long sequence(gradient vanish and long dependency), a variant version, LSTM, could handle this very well. It maintains a cell state which runs through all along the sequence. It has the Gate mechanism to determine which information in the cell state to forget and which new information from the current state to remember.</p>
+<h3 id="Conclusion-on-RNN"><a href="#Conclusion-on-RNN" class="headerlink" title="Conclusion on RNN"></a>Conclusion on RNN</h3><p>RNN is the natual way we treat a sentence, from left to right(or in contrast), one word after another.But also due to this character, RNN is restricted in parallelization of computation, because one state is obliged to wait for the computation of its previous state. And it is still constrained to handle super-long sequences(length &gt; 200).</p>
+<h1 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h1><p>Convolutional neural networks are less common for sequence modeling than RNN. It takes the meaning of a word by aggregating the local information from its neighbors by convolution operations. </p>
+<h3 id="Comparison-with-RNN"><a href="#Comparison-with-RNN" class="headerlink" title="Comparison with RNN"></a>Comparison with RNN</h3><p>Compared to recurrent networks, the CNN approach allows to discover compositional structure in the sequences more easily since representations are built hierarchically. Convolutional networks do not depend on the computations of the previous time step. Consequently, this allows parallelization over every element in a sequence and has a shorter path to capture long-range dependencies.</p>
+<h3 id="Some-tricks-used-in-CNN-model"><a href="#Some-tricks-used-in-CNN-model" class="headerlink" title="Some tricks used in CNN model"></a>Some tricks used in CNN model</h3><p>In this part, we focus on the model of <a href="https://github.com/facebookresearch/fairseq" target="_blank" rel="noopener">fairseq</a>[1].</p>
+<h4 id="Position-Embeddings"><a href="#Position-Embeddings" class="headerlink" title="Position Embeddings"></a>Position Embeddings</h4><p>As the convolution operation and pooling operation in CNN will affect the ability to learn position information, fairseq added position embeddings to each word with an addictive operation.</p>
+<h4 id="Gated-Linear-Unit"><a href="#Gated-Linear-Unit" class="headerlink" title="Gated Linear Unit"></a>Gated Linear Unit</h4><p>This model uses also a gated linear unit to introduce the relevance information of the current context for each input word.</p>
+<h4 id="Multi-step-Attention"><a href="#Multi-step-Attention" class="headerlink" title="Multi-step Attention"></a>Multi-step Attention</h4><p>Same to the RNN-based model, CNN model also introduces the attention mechanism for decoder. As there are multiple convolutional layer in decoder, this attention mechanism is proceeded in each layer.</p>
+<h3 id="Conclusion-on-CNN"><a href="#Conclusion-on-CNN" class="headerlink" title="Conclusion on CNN"></a>Conclusion on CNN</h3><p>The Seq2Seq model based entirely on CNN can be implemented in parallel, and this reduces a lot of time on training in comparison with RNN and could have a SOTA performance. But it occupies a lot of memory, we could also see that it needs many tricks to ensure the last performance, and most importantly, the parameter adjustment on large data volumes is not easy with so many tricks. In plus, it need a really deep stack of convolution block to handle long dependency, for example, a stacking 6 blocks with kernel_size = 5 results in an input field of 25 elements, i.e. each output depends on 25 words.</p>
+<h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><p>So here comes the model Transformer, which is really a breakthrough in NLP. It introduces a novel network architecture other than RNN or CNN. It enables the parallelization and meanwhile has a better performance.</p>
+<h3 id="The-New-Model"><a href="#The-New-Model" class="headerlink" title="The New Model"></a>The New Model</h3><p><img src="/2020/06/21/RNN-vs-CNN-vs-Transformer/transformer.png" alt><font size="2">Figure1: Model Architecture of Transformer[2]</font><br>Each layer of Encoder has two sub-layers: a multi-head self attention layer and a feed forward layer. Each layer of Decoder has three sub-layers: in addition to the two sub-layers in Encoder, the Decoder inserts a third sub-layer, which performs multi-head attention over the output of the last encoder stack.</p>
+<h3 id="Self-Attention"><a href="#Self-Attention" class="headerlink" title="Self Attention"></a>Self Attention</h3><p>The new attention mechanism which is calculated as below:</p>
+<script type="math/tex; mode=display">Attention(Q,K,V) = Softmax(\frac{QK^T}{\sqrt{d_{k}}})V</script><p>This mechanism is called self-attention because it does not calculate the relevance between a hidden state at the phase of Decoder and Encoder, in contrast, it calculates only the relevance among the inputs or the outputs, that’s why it is called as “self” attention.</p>
+<h3 id="Conclusion-on-Transformer"><a href="#Conclusion-on-Transformer" class="headerlink" title="Conclusion on Transformer"></a>Conclusion on Transformer</h3><p>Transformer is a breakthrough in the domain of MT and could be used in many other domain of NLP. It enable the parallelization and improves the performance of attention mechanism by introducing self-attention. Although there is still a limit of handling hyper-long sequences(length &gt; 512, this limit is usually encountered when we treat Language modeling as a character-level task[3]), we have already and will variation of Transformer which could address this kind of limit and improve its capacity.</p>
+<h1 id="Conclusion-of-the-three-models"><a href="#Conclusion-of-the-three-models" class="headerlink" title="Conclusion of the three models"></a>Conclusion of the three models</h1><p>Although Transformer is proved as the best model to handle really long sequences, the RNN and CNN based model could still work very well or even better than Transformer in the short-sequences task. Like what is proposed in the paper of Xiaoyu et al.(2019)[4], a CNN based model could outperforms all other models on KGQA task with the metrics of BLEU and accuracy.<br>In the next few months, we would also do the same experiments on our own NL2SPARQL task and our own data-sets, so let’s see which model would be dominant. </p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p>[1] Jonas Gehring, Michael Auli et al. Convolutional Sequence to Sequence Learning arXiv:1705.03122v3</p>
+<p>[2] Ashish Vaswani, Noam Shazeer et al. Attention Is All You Need arXiv:1706.03762v5</p>
+<p>[3] Al-Rfou et al. 2018. Character-level lan- guage modeling with deeper self-attention.</p>
+<p>[4] Xiaoyu Yin, Dagmar Gromann, and Sebastian Rudolph, Neural Machine Translating from Natural Language to SPARQL</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -225,133 +215,115 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/06/21/RNN-vs-CNN-vs-Transformer/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/12/GSOC-Week-Two/" class="archive-article-date">
-  	<time datetime="2020-06-12T20:14:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-12</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/06/23/GSOC-Week-Three/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          GSOC-Week-Three
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/12/GSOC-Week-Two/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GSOC-Week-Two</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/12/GSOC-Week-Two/">GSOC-Week-Two</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/07/GSOC-Week-One/" class="archive-article-date">
-  	<time datetime="2020-06-07T16:53:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/07/GSOC-Week-One/">GSOC-Week-One</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/01/GSOC-Bonding-period/" class="archive-article-date">
-  	<time datetime="2020-06-01T12:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/01/GSOC-Bonding-period/">GSOC Bonding period</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -374,8 +346,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

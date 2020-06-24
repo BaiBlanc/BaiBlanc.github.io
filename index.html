@@ -57,6 +57,8 @@
 	        
 				<li><a href="/tags/gsoc-2020/">GSOC-2020</a></li>
 	        
+				<li><a href="/tags/nlp">NLP</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -107,6 +109,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -120,12 +124,14 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">Homepage</a></li>
+					<li style="width: 33.333333333333336%"><a href="/">Homepage</a></li>
 		        
-					<li style="width: 50%"><a href="/tags/gsoc-2020/">GSOC-2020</a></li>
+					<li style="width: 33.333333333333336%"><a href="/tags/gsoc-2020/">GSOC-2020</a></li>
+		        
+					<li style="width: 33.333333333333336%"><a href="/tags/nlp">NLP</a></li>
 		        
 				</ul>
 			</nav>
@@ -141,6 +147,199 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-GSOC-Week-Three" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/23/GSOC-Week-Three/">GSOC-Week-Three</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/23/GSOC-Week-Three/" class="archive-article-date">
+  	<time datetime="2020-06-23T15:37:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, in order to get the direct sense of whether we are in the good direction, I am going to set up the benchmark environment and a baseline with our original NSpM model.</p>
+<h1 id="Benchmark-environment"><a href="#Benchmark-environment" class="headerlink" title="Benchmark environment"></a>Benchmark environment</h1><p><img src="/2020/06/23/GSOC-Week-Three/benchmark_pipeline.png" alt><font size="2">Figure1: The whole benchmark pipeline</font><br>This figure could give you a first impression of our benchmark process. We have selected <a href="https://github.com/AKSW/irbench" target="_blank" rel="noopener">irbench</a> as our benchmark tool. Although Geribil may be more mature, but it is an online platform, and irbench is stabler as it could be set up locally.</p>
+<h2 id="Evaluation-Metrics"><a href="#Evaluation-Metrics" class="headerlink" title="Evaluation Metrics"></a>Evaluation Metrics</h2><p>We will principally evaluate our NSpM model with two metrics, f-score and BLEU score.</p>
+<h3 id="F-score"><a href="#F-score" class="headerlink" title="F-score"></a>F-score</h3><p>f-score aims to evaluate on the retrieved answers, this metric ignores the performance of the NMT model cares only about the final results.</p>
+<script type="math/tex; mode=display">f-score = 2*\frac{Precision*Recall}{Recall+Precision}</script><script type="math/tex; mode=display">Precision = \frac{TP}{TP+FP}</script><script type="math/tex; mode=display">Recall = \frac{TP}{TP+FN}</script><p>In our context, a FP is a wrong answer and a FN is a missed answer. For example:</p>
+<blockquote>
+<p>Query ‘list all scandinavian countries’ returns <code>:Denmark</code>, <code>:Norway</code>, <code>:France</code><br><code>:France</code> is a FP (wrong)<br><code>:Sweden</code>is a FN (missing)</p>
+</blockquote>
+<p>This f-score metric is integrated in the irbench.</p>
+<h3 id="BLEU-score"><a href="#BLEU-score" class="headerlink" title="BLEU score"></a>BLEU score</h3><p>A BLEU score could be accompanied with the f-score, it evaluates the quality of the translation. Imagine that two different questions could give the same answer, so we could never say if the model learns will with only the metric f-score.<br>Normally, the NMT model will automatically calculate this score while training, but it’s still possible if we wants to calculate the BLEU score on the test set. The only problem is that the SPARQL queries interpreted by oud Interpreter are equipped with the complete URIs while the gold queries given by test set of irbench are equipped with PREFIX and abbreviations:</p>
+<blockquote>
+<p>Gold query:  PREFIX dbo: <a href="http://dbpedia.org/ontology/" target="_blank" rel="noopener">http://dbpedia.org/ontology/</a> PREFIX res: <a href="http://dbpedia.org/resource/" target="_blank" rel="noopener">http://dbpedia.org/resource/</a> SELECT DISTINCT ?name WHERE { res:Queens_of_the_Stone_Age dbo:alias ?name }<br>System query: SELECT DISTINCT ?name WHERE { <a href="http://dbpedia.org/resource/Queens_of_the_Stone_Age" target="_blank" rel="noopener">http://dbpedia.org/resource/Queens_of_the_Stone_Age</a> dbo:alias ?name }</p>
+</blockquote>
+<h2 id="irbench-tips"><a href="#irbench-tips" class="headerlink" title="irbench tips"></a>irbench tips</h2><p>If you also want to set up a benchmark environment with irbench, here are some tips to run the jar:<br>I recommend to run it with jdk8, if not, this will cause <em>java.lang.NoClassDefFoundError: javax/xml/bind/JAXBException</em> in higher version, this could still be resolved in JDK 9/10 by adding <code>--add-modules java.xml.bind</code> as an argument in run configuration, or this removed class could be only manually added in pom.xml.<br>As we have only a release version of jar file, this could only be run with jdk8/9/10. (I have run it with jdk14 and failed, and succeeded with jdk8, the solution for jdk9/10 is what I found from this <a href="https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j" target="_blank" rel="noopener">stackoverflow question</a>)</p>
+<p>To run the jar:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar &lt;released_jar_name&gt; -evaluate &lt;datasetID&gt; &lt;path of your results file&gt; <span class="string">"&lt;Metric ID&gt;"</span></span><br></pre></td></tr></table></figure><br>Make sure the json of your results file should be coherent with the test set json.<br>An example:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar irbench-v0.0.1-beta.2.jar -evaluate <span class="string">"qald-9-test-multilingual"</span> <span class="string">"&lt;yourpath&gt;/qald-9-NSpM-test.qald.json"</span> <span class="string">"f-score"</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Pseudo-Baseline"><a href="#Pseudo-Baseline" class="headerlink" title="Pseudo Baseline"></a>Pseudo Baseline</h1><p>I call it a pseudo baseline because we haven’t discussed on the details in order to set up the baseline, and I’ve just made an naive experiment to test if my Benchmark environment works well.<br>Here are some details to be recorded:</p>
+<h3 id="Training-dataset"><a href="#Training-dataset" class="headerlink" title="Training dataset"></a>Training dataset</h3><p>I’ve directly used the dataset of Monument_300 which is proposed in the readme of <a href="https://github.com/dbpedia/neural-qa" target="_blank" rel="noopener">NSpM project</a>. It’s handy to use and not too big to train the model on my Mac.</p>
+<h3 id="Test-set"><a href="#Test-set" class="headerlink" title="Test set"></a>Test set</h3><p>I’ve used all the english question in <a href="https://github.com/AKSW/irbench/blob/master/orbit.benchmark/src/resource/java/org/aksw/orbit/benchmark/qald-9-train-multilingual.qald.json" target="_blank" rel="noopener">qald-train-multilingual.qald.json</a>.</p>
+<h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p>The BLEU score on our own dataset(validation set) is relatively high, 86.9/100.<br>But the result of f-score on test set is terrible, 0 f-score on average, but this is normal because our training set is really restricted to the domain of Monument but the test set questions are more opened(I used the word ‘opened’ but to be noted, there are still in restricted domain but not open-domain questions ).<br>One problem is that I found some queries are not grammarly correct, which means the could only retrieve a <strong>Bad Request 400</strong> from the SPARQL endpoint.<br>Another point to be noted is that the prefix are not correctly used as below:</p>
+<blockquote>
+<p>SELECT DISTINCT ?name WHERE { <a href="http://dbpedia.org/resource/Queens_of_the_Stone_Age" target="_blank" rel="noopener">http://dbpedia.org/resource/Queens_of_the_Stone_Age</a> dbo:alias ?name }</p>
+</blockquote>
+<p>We could see that the <strong>resource</strong> is represented by the complete URI but the <strong>Ontology</strong> is represented by its abbreviation, and this is not a unique case. This could be caused by the rules for generating the templates in Generator.</p>
+<h3 id="Some-thoughts"><a href="#Some-thoughts" class="headerlink" title="Some thoughts"></a>Some thoughts</h3><p>We could see that only one domain data-set could not train a satisfactory QA model to response to relatively open questions, so it becomes problematic to select domains so in order to generate a relatively complete data-set which can handle questions most domains.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/23/GSOC-Week-Three/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-RNN-vs-CNN-vs-Transformer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/RNN-vs-CNN-vs-Transformer/">RNN vs CNN vs Transformer</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/21/RNN-vs-CNN-vs-Transformer/" class="archive-article-date">
+  	<time datetime="2020-06-21T13:27:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>I’ve been working on an open-source project: <a href="https://github.com/BaiBlanc/neural-qa" target="_blank" rel="noopener">NSpM</a> on Question Answering system with DBpedia. As the Interpretor part, which means the translation from a <em>natural language question</em> to a <em>formal query</em>(SPARQL) is considered as a Machine Translation task, so in this blog, I will talk about the three largely used bases of the seq2seq model, RNN, CNN and Transformer.</p>
+<h1 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h1><p>The dominant approach in NLP, which are still very popular to date, is to use a series of bi-directional recurrent neural networks (RNN) to encode the input sequence and to generate(decode) a squence of output. This recurrent approach matches the natual way of our brain to read one word after another.<br>RNN (bi-LSTM) is currently used as our based NMT model for NSpM. RNN is one of the dominant approach used in NLP, it uses a series of recurrent of neural units to encode the input sequence into a context vector. </p>
+<h3 id="Soltions-of-handling-long-sequences"><a href="#Soltions-of-handling-long-sequences" class="headerlink" title="Soltions of handling long sequences"></a>Soltions of handling long sequences</h3><p>The main constraint for a recurrent model is its capacity of handling long sequences. I will present briefly two principle solutions to address the problem.</p>
+<h4 id="Attention"><a href="#Attention" class="headerlink" title="Attention"></a>Attention</h4><p>As the use of a fixed-length context vector is problematic for translating long sentences, the attention mechanism is introduced, which dynamically calculate the context vector at the phase of decoding based on all the hidden states.</p>
+<h4 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h4><p>While the basic version of RNN model struggles with long sequence(gradient vanish and long dependency), a variant version, LSTM, could handle this very well. It maintains a cell state which runs through all along the sequence. It has the Gate mechanism to determine which information in the cell state to forget and which new information from the current state to remember.</p>
+<h3 id="Conclusion-on-RNN"><a href="#Conclusion-on-RNN" class="headerlink" title="Conclusion on RNN"></a>Conclusion on RNN</h3><p>RNN is the natual way we treat a sentence, from left to right(or in contrast), one word after another.But also due to this character, RNN is restricted in parallelization of computation, because one state is obliged to wait for the computation of its previous state. And it is still constrained to handle super-long sequences(length &gt; 200).</p>
+<h1 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h1><p>Convolutional neural networks are less common for sequence modeling than RNN. It takes the meaning of a word by aggregating the local information from its neighbors by convolution operations. </p>
+<h3 id="Comparison-with-RNN"><a href="#Comparison-with-RNN" class="headerlink" title="Comparison with RNN"></a>Comparison with RNN</h3><p>Compared to recurrent networks, the CNN approach allows to discover compositional structure in the sequences more easily since representations are built hierarchically. Convolutional networks do not depend on the computations of the previous time step. Consequently, this allows parallelization over every element in a sequence and has a shorter path to capture long-range dependencies.</p>
+<h3 id="Some-tricks-used-in-CNN-model"><a href="#Some-tricks-used-in-CNN-model" class="headerlink" title="Some tricks used in CNN model"></a>Some tricks used in CNN model</h3><p>In this part, we focus on the model of <a href="https://github.com/facebookresearch/fairseq" target="_blank" rel="noopener">fairseq</a>[1].</p>
+<h4 id="Position-Embeddings"><a href="#Position-Embeddings" class="headerlink" title="Position Embeddings"></a>Position Embeddings</h4><p>As the convolution operation and pooling operation in CNN will affect the ability to learn position information, fairseq added position embeddings to each word with an addictive operation.</p>
+<h4 id="Gated-Linear-Unit"><a href="#Gated-Linear-Unit" class="headerlink" title="Gated Linear Unit"></a>Gated Linear Unit</h4><p>This model uses also a gated linear unit to introduce the relevance information of the current context for each input word.</p>
+<h4 id="Multi-step-Attention"><a href="#Multi-step-Attention" class="headerlink" title="Multi-step Attention"></a>Multi-step Attention</h4><p>Same to the RNN-based model, CNN model also introduces the attention mechanism for decoder. As there are multiple convolutional layer in decoder, this attention mechanism is proceeded in each layer.</p>
+<h3 id="Conclusion-on-CNN"><a href="#Conclusion-on-CNN" class="headerlink" title="Conclusion on CNN"></a>Conclusion on CNN</h3><p>The Seq2Seq model based entirely on CNN can be implemented in parallel, and this reduces a lot of time on training in comparison with RNN and could have a SOTA performance. But it occupies a lot of memory, we could also see that it needs many tricks to ensure the last performance, and most importantly, the parameter adjustment on large data volumes is not easy with so many tricks. In plus, it need a really deep stack of convolution block to handle long dependency, for example, a stacking 6 blocks with kernel_size = 5 results in an input field of 25 elements, i.e. each output depends on 25 words.</p>
+<h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><p>So here comes the model Transformer, which is really a breakthrough in NLP. It introduces a novel network architecture other than RNN or CNN. It enables the parallelization and meanwhile has a better performance.</p>
+<h3 id="The-New-Model"><a href="#The-New-Model" class="headerlink" title="The New Model"></a>The New Model</h3><p><img src="/2020/06/21/RNN-vs-CNN-vs-Transformer/transformer.png" alt><font size="2">Figure1: Model Architecture of Transformer[2]</font><br>Each layer of Encoder has two sub-layers: a multi-head self attention layer and a feed forward layer. Each layer of Decoder has three sub-layers: in addition to the two sub-layers in Encoder, the Decoder inserts a third sub-layer, which performs multi-head attention over the output of the last encoder stack.</p>
+<h3 id="Self-Attention"><a href="#Self-Attention" class="headerlink" title="Self Attention"></a>Self Attention</h3><p>The new attention mechanism which is calculated as below:</p>
+<script type="math/tex; mode=display">Attention(Q,K,V) = Softmax(\frac{QK^T}{\sqrt{d_{k}}})V</script><p>This mechanism is called self-attention because it does not calculate the relevance between a hidden state at the phase of Decoder and Encoder, in contrast, it calculates only the relevance among the inputs or the outputs, that’s why it is called as “self” attention.</p>
+<h3 id="Conclusion-on-Transformer"><a href="#Conclusion-on-Transformer" class="headerlink" title="Conclusion on Transformer"></a>Conclusion on Transformer</h3><p>Transformer is a breakthrough in the domain of MT and could be used in many other domain of NLP. It enable the parallelization and improves the performance of attention mechanism by introducing self-attention. Although there is still a limit of handling hyper-long sequences(length &gt; 512, this limit is usually encountered when we treat Language modeling as a character-level task[3]), we have already and will variation of Transformer which could address this kind of limit and improve its capacity.</p>
+<h1 id="Conclusion-of-the-three-models"><a href="#Conclusion-of-the-three-models" class="headerlink" title="Conclusion of the three models"></a>Conclusion of the three models</h1><p>Although Transformer is proved as the best model to handle really long sequences, the RNN and CNN based model could still work very well or even better than Transformer in the short-sequences task. Like what is proposed in the paper of Xiaoyu et al.(2019)[4], a CNN based model could outperforms all other models on KGQA task with the metrics of BLEU and accuracy.<br>In the next few months, we would also do the same experiments on our own NL2SPARQL task and our own data-sets, so let’s see which model would be dominant. </p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p>[1] Jonas Gehring, Michael Auli et al. Convolutional Sequence to Sequence Learning arXiv:1705.03122v3</p>
+<p>[2] Ashish Vaswani, Noam Shazeer et al. Attention Is All You Need arXiv:1706.03762v5</p>
+<p>[3] Al-Rfou et al. 2018. Character-level lan- guage modeling with deeper self-attention.</p>
+<p>[4] Xiaoyu Yin, Dagmar Gromann, and Sebastian Rudolph, Neural Machine Translating from Natural Language to SPARQL</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">nlp</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/21/RNN-vs-CNN-vs-Transformer/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-GSOC-Week-Two" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -744,6 +943,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">gsoc-2020</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">nlp</a>
               </li>
             
             <div class="clearfix"></div>
