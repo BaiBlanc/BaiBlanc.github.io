@@ -148,6 +148,126 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Four" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/28/GSOC-Week-Four/">GSOC-Week-Four</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/28/GSOC-Week-Four/" class="archive-article-date">
+  	<time datetime="2020-06-28T15:33:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Last week, I’ve set up a pseudo baseline with 0 f-score, so this week, I will be principally working on the set up of a real baseline and benchmark.<br>As we have discussed in last Thursday’s meeting, choosing the proper ontologies to cover all the queries in <code>qald-9-train</code> will be crucial. To start with, we will only focus on the simple Basic-Graph-Pattern queries</p>
+<h1 id="Strategies-of-creating-data-set"><a href="#Strategies-of-creating-data-set" class="headerlink" title="Strategies of creating data set"></a>Strategies of creating data set</h1><p>We follow the strategiy for the data:</p>
+<ol>
+<li>Top-down by using QALD-9 queries from experts</li>
+<li>Bottom-up by creating templates from data itself</li>
+</ol>
+<p>And I’ve got two approaches to execute this strategy:</p>
+<h3 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach 1"></a>Approach 1</h3><blockquote>
+<ol>
+<li>Extract all the ontologies that appear in the <code>QALD-9</code> data set. Most of the ontoloies are of type Property, not of type Class, so we will need to query DBpedia base to get their Domain Class, like Class Person for Property education.</li>
+<li>Use Anand’s pipeline and these ontologies of Class to generate our template set.<br>This approach has a disadvantage, which I will be discussing in detail in the next section, that is it will create a really huge template set, with 26 ontologies, 1000+ templates, which will generate a size of 440k data set. This huge and heterogeneous(26 ontologies) training set is almost impossible to be learnt.</li>
+</ol>
+<p>So I came up with another approoach.</p>
+</blockquote>
+<h3 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h3><blockquote>
+<p>This approach follows the first two steps of approach 1, and a third step</p>
+<ol>
+<li>Filter the template set, to eliminate all the templates with ontology that doesn’t appear in ‘QALD-9’ data set. This will reduce dramatically the size of training set(from 440k to 43k).<br>But this approach didn’t work neither because of the multiple ontologies, so at last I tries with only one Ontology which is the most concerned in <code>QALD-9</code>, like ‘Person’ and ‘Work’.</li>
+</ol>
+</blockquote>
+<h1 id="Troubles-encountered"><a href="#Troubles-encountered" class="headerlink" title="Troubles encountered"></a>Troubles encountered</h1><p> The Neural Machine Translation(nmt) model has encountered some troubles during training, resulting a low BLEU score(around 65). I will present these troubles and what I have done to overcome some of them, or try to find out the reasons why these issues occurred and the potential solutions.</p>
+<h3 id="Token-sep-dot"><a href="#Token-sep-dot" class="headerlink" title="Token sep_dot"></a>Token <code>sep_dot</code></h3><p> The token <sep_dot> has appeared very frequently in the interpreted queries, as below:</sep_dot></p>
+<blockquote>
+<p>select ?x where{dbo:pdb . . . }</p>
+</blockquote>
+<p> As we are dealing with single-BGP queries, therefore dots are not supposed to appear in our SPARQL at all, because <sep_dot> are only used to separate multi-BGP and to end the query:</sep_dot></p>
+<blockquote>
+<p>SELECT DISTINCT ?uri WHERE { res:Area_51 dbo:location ?uri . ?uri dbo:country res:United_States. }</p>
+</blockquote>
+<p> I found that this issue is cause by the proper noun like <strong>Washington D.C.</strong>, the last <strong>dot</strong> is wrongly identified as a <sep_dot>.<br> So we decided to clean the data by eliminating all the queries with <sep_dot> and the corresponding questions(1.6k out of 42k question-query pairs).</sep_dot></sep_dot></p>
+<p> After directly solved this issue(by cleaning the data), I also modified the base code to avoid this <a href="https://github.com/dbpedia/neural-qa/issues/28" target="_blank" rel="noopener">issue</a> in the future.</p>
+<h3 id="Entity-Mis-linked"><a href="#Entity-Mis-linked" class="headerlink" title="Entity Mis-linked"></a>Entity Mis-linked</h3><p> Entity linking in our context of KGQA is the task of deciding which KG entity is referred to by (a certain phrase in) the NL question. Entity linking is considered as a subtask in the process of question answering, but as we are using NMT model, translation based systems (see Section 4.3) in principle could generate the whole query in a single sequence decoding process, thus solving all subtasks at once. As a result, we could not specifically solve this entity mis-linked problem separately.<br> The issue could be showed as the examples below:</p>
+<blockquote>
+<p>src: What is the building end date of 50 kennedy plaza ?<br>ref: select var_x where brack_open dbr_50_Kennedy_Plaza dbo_buildingEndDate var_x brack_close<br>nmt: select var_x where brack_open dbr_Giebelstadt_Army_Airfield dbo_buildingEndDate var_x brack_close</p>
+<p>src: Who discovered Pluto?<br>ref: SELECT ?uri WHERE { dbr:Pluto dbo:discoverer ?uri }<br>nmt: SELECT ?x where{<a href="http://dbpedia.org/resource/819_Barnardiana" target="_blank" rel="noopener">http://dbpedia.org/resource/819_Barnardiana</a> dbo:discoverer ?x }</p>
+</blockquote>
+<h5 id="Failed-attempts"><a href="#Failed-attempts" class="headerlink" title="Failed attempts"></a>Failed attempts</h5><p>Consequently, I’ve thought to solve this issue straightway by adding more train_steps and number of units, and hopefully this more complex model could learn the linking relation between a String and an entity. But unfortunately, this doesn’t solve the problem. The BLEU score is always around 65. Empirically, a BLEU score greater than 80 means that the model has learnt the linking relation.<br>I’ve then decided to filter the data by eliminating all the irrelevant templates, i.e. keeping only the templates that contain the properties which appear in the <code>qald-9-train</code> data set.(Approach2 that I’ve presented) I though that reducing the size of data set could help with the mis-match problem, but this doesn’t help(BLEU score still around 65). And I thought it could be caused by the multiple ontologies we used, so I tried with single ontology template set, like Person and Work, this time, the BLEU score could reach a relative satisfactory level(greater than 80 around 12000 steps for dbo:Person, and 72 at 20000 steps for ontology dbo:Work ) </p>
+<h5 id="Reason-for-the-mis-linking-and-some-thoughts"><a href="#Reason-for-the-mis-linking-and-some-thoughts" class="headerlink" title="Reason for the mis-linking and some thoughts"></a>Reason for the mis-linking and some thoughts</h5><p>The NMT model has been proved to be successful(even it might not be the best model today) for Machine Translation domain, our NSpM model is also proved to be mature.</p>
+<p>The problem is an entity in a SPARQL query is usually “longer”, which means for example, a human’s name “William Henry Smith” in the natural language is represented by “dbr_William_Henry_Smith” or even longer “dbr_William_Henry_Smith_(American_politician)”. This three words name is converted to a single word entity, so this time we need to translate correctly all the three words so that the loss could get improved, a single error like “dbr_William_Henry_Jack” is not accepted and means no improvement. This means, for NL2SPARQL task, the NMT model will need more effort and chance to learn something(especially an entity name) to reduce the Loss than a normal NL2NL task(like french2english).</p>
+<p>This is ok when we just have one ontology of entities, for example, in order to generate the data set of ontology Person, we use approximately 600 entities of Person for each template on average. This means the NMT model need to learn the combination between 600 entities and 600 phrase in the NLQ. This even get worse when we are training with multi-ontology data set. Imagine the dramatic increase of the number of combinations. <script type="math/tex">N</script> ontology means <script type="math/tex">N^2</script> combinations. This may not be mathematically correct, but this <script type="math/tex">N^2</script> could give the intuition of how much harder it will be if we involve more ontology.</p>
+<p>Even at last, I choose only one single ontology, like dbo:Person or dbo:Work to generate the template set, I still got zero f-score. I’ve compared the our predicted SPARQLs with the golden ones, some times, it’s caused by a mis-matched predicate, but most of the time, it’s the mis-linked entity. What is surprising is that, many of the entities appear in ‘QALD-9’ doesn’t even appear in our training set, so we have zero chance to respond to those questions.</p>
+<p>Another note to be pointed out is that, I found many of the structure of questions in <code>QALD-9</code> have never appear in our template-based data set, which means the training set and testing set have a really different distribution in terms of question structure. Like: “Give me a list of all trumpet players that were bandleaders.”, this kind of question isn’t concluded by any of our template.</p>
+<h1 id="Conclusion-with-my-Paraphrasing-strategy-and-further-direction"><a href="#Conclusion-with-my-Paraphrasing-strategy-and-further-direction" class="headerlink" title="Conclusion with my Paraphrasing strategy and further direction"></a>Conclusion with my Paraphrasing strategy and further direction</h1><p>After these failed attempts, I began to think about my paraphrasing strategy. Even <code>QALD-9</code> isn’t a data set of good quality, but as we are just using it to test our model to set up a baseline, we could consider it as the real questions asked by users. In this case, which issues mentioned above could be solved by the Paraphraser:</p>
+<h3 id="1-Mis-matched-predicate"><a href="#1-Mis-matched-predicate" class="headerlink" title="1. Mis-matched predicate"></a>1. Mis-matched predicate</h3><p>This would be the issue that could most possibly be solve with the Paraphraser. But this issue isn’t the most problem that I have encountered.</p>
+<h3 id="2-Mis-linked-entity-object"><a href="#2-Mis-linked-entity-object" class="headerlink" title="2. Mis-linked entity(object)"></a>2. Mis-linked entity(object)</h3><p>This is the most encountered problem, but unfortunately, we will only process the paraphrasing at the phase of templates generation, where entities are represented by a placeholder.<br>This could be solved by adding more hidden units, layers and training steps, but this will need a lot time to be proved.(16 hours for a 2 layer-LSTM 1024 units model and 36k training-steps). Another way, which is still in theory in my head, is to add an entity-linking phase to our NSpM model, and to use another approach to replace the NMT model.</p>
+<h3 id="3-Different-question-query-structure"><a href="#3-Different-question-query-structure" class="headerlink" title="3. Different question/query structure"></a>3. Different question/query structure</h3><p>This is possible to be solved by the paraphrasing if only the question structures are different and impossible if the query structures are also different.<br>Adding more rules to generate template could be straightway to solve this issue. Meanwhile, it’s also interesting to implement a continuous-learning approach to automatically learn new templates, but this would probably need a User feedback system.</p>
+<p>At last, I want to say that to simply set up the benchmark and a baseline, changing the data set may be easier. But to improve our NSpM model, these directions could all be considered.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/28/GSOC-Week-Four/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Three" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
