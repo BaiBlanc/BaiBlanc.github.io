@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://baiblanc.github.io/2020/06/28/GSOC-Week-Four/bleu_perplexity_2.png">
 <meta property="og:image" content="http://baiblanc.github.io/2020/06/28/GSOC-Week-Four/bleu_1_2.png">
 <meta property="article:published_time" content="2020-06-28T15:33:14.000Z">
-<meta property="article:modified_time" content="2020-07-01T21:02:01.800Z">
+<meta property="article:modified_time" content="2020-07-02T13:58:13.097Z">
 <meta property="article:author" content="Zheyuan BAI">
 <meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
@@ -191,9 +191,7 @@
 </blockquote>
 <h3 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h3><blockquote>
 <p>This approach follows the first two steps of approach 1, and a third step</p>
-<ol>
-<li>Filter the template set, to eliminate all the templates with ontology that doesn’t appear in ‘QALD-9’ data set. This will reduce dramatically the size of training set(from 440k to 43k).<br>But this approach didn’t work neither because of the multiple ontologies, so at last I tries with only one Ontology which is the most concerned in <code>QALD-9</code>, like ‘Person’ and ‘Work’.</li>
-</ol>
+<p>3.Filter the template set, to eliminate all the templates with ontology that doesn’t appear in ‘QALD-9’ data set. This will reduce dramatically the size of training set(from 440k to 43k).<br>But this approach didn’t work neither because of the multiple ontologies, so at last I tries with only one Ontology which is the most concerned in <code>QALD-9</code>, like ‘Person’ and ‘Work’.</p>
 </blockquote>
 <h1 id="Troubles-encountered"><a href="#Troubles-encountered" class="headerlink" title="Troubles encountered"></a>Troubles encountered</h1><p> The Neural Machine Translation(nmt) model has encountered some troubles during training, resulting a low BLEU score(around 65). I will present these troubles and what I have done to overcome some of them, or try to find out the reasons why these issues occurred and the potential solutions.</p>
 <h3 id="Token-sep-dot"><a href="#Token-sep-dot" class="headerlink" title="Token sep_dot"></a>Token <code>sep_dot</code></h3><p> The token <sep_dot> has appeared very frequently in the interpreted queries, as below:</sep_dot></p>
