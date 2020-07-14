@@ -148,6 +148,93 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Six" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/13/GSOC-Week-Six/">GSOC-Week-Six</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/13/GSOC-Week-Six/" class="archive-article-date">
+  	<time datetime="2020-07-13T18:03:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week’s work will be continuing the training of NMT model with embedding and see if the embeddings could really help as the train_steps goes larger.(As last week I only finish the 20000-steps training and see the trend of progressing, but then reach the limit of usage of GPU).<br>Another task will be to try to use a BERT model to get the sentence representation in place of Universal Sentence Encoding, and try to compare these two methods of sentence embedding.</p>
+<h1 id="Embedding-and-non-embedding-Training-results"><a href="#Embedding-and-non-embedding-Training-results" class="headerlink" title="Embedding and non-embedding Training results"></a>Embedding and non-embedding Training results</h1><p><img src="/2020/07/13/GSOC-Week-Six/embeded_bleu.png" alt><br><em>Figure Bleu score of NMT model with embeddings</em></p>
+<p><img src="/2020/07/13/GSOC-Week-Six/no_embeded_bleu.png" alt><br><em>Figure Bleu score of NMT model without embeddings</em></p>
+<p>It’s glat to see that embeddings could help NMT model improve its learning performance.</p>
+<h1 id="BERT"><a href="#BERT" class="headerlink" title="BERT"></a>BERT</h1><p>The goal here is to represent a variable length sentence into a fixed length vector so that we could calculate a similarity score between two sentences. We have already tried Universal Sentence Encoder in the past few weeks, and this week, I have tried another option, using BERT.<br>The pre-trained model BERT could be directly used to give the sentence vector. In my experiment, I used <a href="https://storage.googleapis.com/bert_models/2018_10_18/cased_L-12_H-768_A-12.zip" target="_blank" rel="noopener">this model</a> with 12 layer and 768 number of vector dimensions.<br>To extract the sentence vector, there is a trick:<br>As BERT model will add <cls> token and <sep> token to the head and the end of each input sentence, and the output which corresponds to the <cls> could be used as the sentence vector. But here, as we will not do any fine-tune to the BERT model, we will take the second-to-last hidden layer of all of the tokens in the sentence and do average pooling.<br>The reason of taking the second-to-last is that The last layer is too closed to the target functions (i.e. masked language model and next sentence prediction) during pre-training, therefore may be biased to those targets, and the layers before may not learn enough about the sentence.<br>Concerning to the <cls> token, I will explain later why we don’t use it directly to get the sentence encoder.</cls></cls></sep></cls></p>
+<h3 id="BERT-vs-USE"><a href="#BERT-vs-USE" class="headerlink" title="BERT vs USE"></a>BERT vs USE</h3><p><em>The experiment if done on my Mac pro, with a CPU of 4-core Intel Core i5</em></p>
+<blockquote>
+<p>who is the spouse of &lt; a &gt; ?<br>who is the wife of &lt; a &gt; ?<br>BERT similarity: 0.99015945  24’’93<br>USE similarity:0.9243937  51’’10<br>edit distance:3</p>
+<p>What is the height of <A> ?<br>Where does the height of <A> come from?<br>BERT:0.9815554  24’’92<br>USE: 0.85236233  48’’35<br>edit distance:4</A></A></p>
+<p>She hates me.<br>She loves me.<br>BERT: 0.9860806 23’’96<br>BERT(-1): 0.9647469<br>USE:  0.678635 49’’70<br>edit distance:1</p>
+</blockquote>
+<p>We could see that the similarity(cosine) calculated from a BERT representation are not robust(always &gt;0.9) compared to USE. The only advantage is that it extracts the sentence vector much faster than USE thanks to the optimization of <a href="https://github.com/terrifyzhao/bert-utils" target="_blank" rel="noopener">this project</a>.<br>The reason for not using <cls> token as sentence representation is that the pre-trained model is not fine-tuned on any downstream tasks yet. so in this case, the hidden state of <CLS> is not a good sentence representation. If later we could fine-tune the model, we may use [CLS] as well. But in our case, we won’t do any fine-tune to the BERT model as we want to simply calculate the semantic similarity between two sentences.<br>Another thing to be pointed out is the reason for why cosine similarity of BERT sentence vectors is always higher than 0.9. I found it’s suggested that a decent representation for a downstream task doesn’t mean that it will be meaningful in terms of cosine distance. Since cosine distance is a linear space where all dimensions are weighted equally. As a result, if we want to use cosine distance anyway, then we should focus on the rank not the absolute value.<br>For more explanation the BERT pre-trained model, please refer to <strong>Hanxiao’s documentation</strong>[1]</CLS></cls></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>As we could see, that NMT with embedding could really give a hand to the learning of translation. In addition, the generation of sentence vector of non fine-tuned BERT model is faster but much weaker than Universal Sentence Encoder in terms of sentence similarity task, so I think we should continue using the USE model but find a way to alleviate the time consuming problem(even I ran it on cpu, 50 seconds for one pair of sentence embeddings is a little bit too long).</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] Hanxiao’s documentation for bert-as service:<br> <a href="https://bert-as-service.readthedocs.io/en/latest/section/faq.html#how-do-you-get-the-fixed-representation-did-you-do-pooling-or-something" target="_blank" rel="noopener">https://bert-as-service.readthedocs.io/en/latest/section/faq.html#how-do-you-get-the-fixed-representation-did-you-do-pooling-or-something</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/13/GSOC-Week-Six/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Five" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
