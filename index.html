@@ -148,6 +148,117 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Seven" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/17/GSOC-Week-Seven/">GSOC-Week-Seven</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/17/GSOC-Week-Seven/" class="archive-article-date">
+  	<time datetime="2020-07-17T19:12:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, I have first tried a 100k-training steps training with embeddings, and it seems that the model could be still improved a little bit. Maybe 120k would be proper.<br>I’ve principally studied the other paraphrase generation methods, especially the metric of evaluation they used, but unfortunately, none of them could be used with our Paraphraser.<br>So I created a metric to evaluate the Paraphrasing, which is a combination of Cosine, two edit distances.</p>
+<h1 id="The-remaining-training"><a href="#The-remaining-training" class="headerlink" title="The remaining training"></a>The remaining training</h1><p><img src="/2020/07/17/GSOC-Week-Seven/100k.png" alt><br>Figure BLEU score till 100k training steps</p>
+<h1 id="Assessment-for-Paraphrasing"><a href="#Assessment-for-Paraphrasing" class="headerlink" title="Assessment for Paraphrasing"></a>Assessment for Paraphrasing</h1><p>As our Paraphraser could give several candidates of the paraphrased questions, so an evaluation metric would be necessary to pick up the best one.<br>There are three criteria in paraphrase generation: Semantic adequacy, fluency, and dissimilarity. I’ve checked several methods that could be used to automatically evaluate the paraphrasing generation: iBLEU, ParaMetric, PEM, PINC.<br>Some of these should be used with BLEU score, others could be used solely, but unfortunately, none of these could be used in our Paraphraser, because they either need manual alignments, or they need reference sequence to calculate metrics. As a result, I tried to build a “metric” for paraphrasing evaluation on my own.</p>
+<h3 id="Self-created-Metric"><a href="#Self-created-Metric" class="headerlink" title="Self-created Metric"></a>Self-created Metric</h3><p>This score is based on 3 other metrics, cosine evaluation, edit distance of sentence, and edit distance of the POS tagging sequence.</p>
+<script type="math/tex; mode=display">Score = (EDS+EDT)*Cosine\ Similarity</script><script type="math/tex; mode=display">EDS = Edit\ distance\ of\ sentence</script><script type="math/tex; mode=display">EDT = Edit\ distance\ of\ POS\ tagging\ sequence</script><p>We need to assure that the cosine similarity is greater than 0.7 so that the paraphrased question is not so far from the original one.<br>Unfortunately, this cosine similarity’s threshold is not perfect, for examples: between <code>What is the death cause of &lt;A&gt; ?</code> and <code>Why did &lt;A&gt; die ?</code> is 0.67, while between <code>What is the number of abbreviation of &lt;A&gt; ?</code> and <code>What are numbers for &lt;A&gt; ?</code> cosine similarity is 0.83. This shortcoming could be solved when we have better sentence representation than Universal Sentence Encoder. (Fine-tuned BERT model)</p>
+<h3 id="List-of-terminologies-of-POS-tags"><a href="#List-of-terminologies-of-POS-tags" class="headerlink" title="List of terminologies of POS tags"></a>List of terminologies of POS tags</h3><p>I used NLTK library to tokenize the sequence and do POS tagging.</p>
+<h5 id="Part-of-the-list-of-POS-tags-in-NTLK"><a href="#Part-of-the-list-of-POS-tags-in-NTLK" class="headerlink" title="Part of the list of POS tags in NTLK"></a>Part of the list of POS tags in NTLK</h5><p>I only make use of NNP in this list to ensure that the paraphrased questions don’t generate other proper noun, but only XYZ.</p>
+<ul>
+<li>WP - Wh-pronoun - what</li>
+<li>VB - Verb, base form</li>
+<li>VBD - Verb, past tense</li>
+<li>VBG - Verb, gerund or present participle</li>
+<li>VBN - Verb, past participle</li>
+<li>VBP - Verb, non-3rd person singular present</li>
+<li>VBZ - Verb, 3rd person singular present</li>
+<li>NN - Noun, singular or mass</li>
+<li>NNS - Noun, plural</li>
+<li>NNP - Proper noun, singular</li>
+<li>NNPS - Proper noun, plural</li>
+<li>IN - Preposition or subordinating conjunction - in</li>
+</ul>
+<h5 id="A-Universal-Part-of-Speech-Tagset"><a href="#A-Universal-Part-of-Speech-Tagset" class="headerlink" title="A Universal Part-of-Speech Tagset"></a>A Universal Part-of-Speech Tagset</h5><p>The POS tagset is too detailed to calculate the distance, so I used another Universal POS tagset which is more general.</p>
+<ul>
+<li>ADJ - adjective</li>
+<li>ADP - adposition</li>
+<li>ADV - adverb</li>
+<li>CONJ - conjunction</li>
+<li>DET - determiner, article</li>
+<li>NOUN - noun</li>
+<li>PRT - particle</li>
+<li>PRON - pronuon</li>
+<li>VERB - verb</li>
+<li>. - punctuation marks</li>
+<li>X - other</li>
+</ul>
+<h3 id="Similar-Idea-from-the-paper"><a href="#Similar-Idea-from-the-paper" class="headerlink" title="Similar Idea from the paper"></a>Similar Idea from the paper</h3><p><a href="https://arxiv.org/pdf/2007.03875.pdf" target="_blank" rel="noopener">KQA Pro</a> [1], recently published benchmark of complex KGQA, proposed a similar approach with ours which tries to improve the diversity of questions generated with templates. The difference would be they utilize a crowd-sourcing method on AMT, while we try to realize it automatically and directly on the original templates. The paraphrasing process also tries to remove the questions if they confuse the workers.<br>This human-been effort could solve a lot of problems that I mentioned in our case, like the semantic dissimilarity problem and the fluency of language, but in the meanwhile, it costs a lot, not only money. but also time, manual effort.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>I should try to paraphrase the template set in the next few days, because each single paraphrasing process takes about 2-3 minutes on Colab with GPU,(Generate candidates -&gt; Extract sentence representation -&gt; Calculate metric score -&gt; Ranking). With a template size of 1000, it takes at least 2000 minutes(33h).</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p>[1] Jiaxin Shi, Shulin Cao et al. (2020.7) KQA Pro: A Large Diagnostic Dataset for Complex<br>Question Answering over Knowledge Base</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/17/GSOC-Week-Seven/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Six" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1068,77 +1179,10 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/07/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/07/hello-world/" class="archive-article-date">
-  	<time datetime="2020-05-07T17:53:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/07/hello-world/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    </nav>
   
 
 
