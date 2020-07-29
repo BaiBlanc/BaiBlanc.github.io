@@ -148,6 +148,184 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Eight" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/28/GSOC-Week-Eight/">GSOC-Week-Eight</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/28/GSOC-Week-Eight/" class="archive-article-date">
+  	<time datetime="2020-07-28T18:30:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, the code of Paraphraser has been optimised by Tommaso and the process becomes much faster. So instead of working on Sentence-BERT, I’ve accomplished many small tasks</p>
+<h1 id="Basic-Templates"><a href="#Basic-Templates" class="headerlink" title="Basic Templates"></a>Basic Templates</h1><p>We thought that some question-templates whose queries involve SPARQL operators are not properly created, so we decided to firstly not include those operators and only generate basic templates.</p>
+<h3 id="Basic-question-form"><a href="#Basic-question-form" class="headerlink" title="Basic question form"></a>Basic question form</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Beginning pf Question</td>
+<td style="text-align:center">When is the</td>
+<td style="text-align:center">Who is the</td>
+<td style="text-align:center">What is the</td>
+<td style="text-align:center">Where is the</td>
+</tr>
+<tr>
+<td style="text-align:center">Beginning of Query</td>
+<td style="text-align:center">select ?x</td>
+<td style="text-align:center">select ?x</td>
+<td style="text-align:center">select ?x</td>
+<td style="text-align:center">select ?x</td>
+</tr>
+<tr>
+<td style="text-align:center">Ending of Query</td>
+<td style="text-align:center">}</td>
+<td style="text-align:center">}</td>
+<td style="text-align:center">}</td>
+<td style="text-align:center">}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="SPARQL-Operator-COUNT"><a href="#SPARQL-Operator-COUNT" class="headerlink" title="SPARQL Operator COUNT"></a>SPARQL Operator COUNT</h3><p>COUNT in simple questions</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.how many airlines are there?</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:airline }</td>
+</tr>
+<tr>
+<td style="text-align:center">2.how many destinations does <Airline> have?</Airline></td>
+<td style="text-align:center">select COUNT(*) as ?c { <Airline> dbo:destination ?x }</Airline></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Non-question sentence</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">list all airlines based in germany</td>
+<td style="text-align:center">select ?x { ?x a dbo:Airline ; dbo:headquarter dbr:Germany }</td>
+</tr>
+<tr>
+<td style="text-align:center">List all airlines whose destination is China.</td>
+<td style="text-align:center">select ?x { ?x a dbo:Airline ; dbo:destination dbr:China }  OR  select ?x { ?x dbo:destination dbr:China }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>COUNT in Compositional question</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">how many airlines are based in germany?</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:Airline ; dbo:headquarter dbr:Germany }</td>
+</tr>
+<tr>
+<td style="text-align:center">how many airlines whose destination is China</td>
+<td style="text-align:center">select (count(<em>) as ?c) { ?x a dbo:Airline ; dbo:destination dbr:China }  OR  select (count(</em>) as ?c) { ?x dbo:destination dbr:China }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We could see that the COUNT operator is relatively simple, because it involves only one single variable. And based on the non-question sentence “List …”, the SPARQL query is also simple to be transferred, just change <code>select ?x</code> to <code>select (count(*) as ?c)</code>.<br>So far, we have constructed two structures of natural language questions properly, one counts the entity itself and another counts an attribute of the entity.</p>
+<h1 id="Remote-Server"><a href="#Remote-Server" class="headerlink" title="Remote Server"></a>Remote Server</h1><p>This week, I’ve also got the support of computation from our community. Although it’s just a CPU server, it has 96 GB of RAM and at least, it could train or fine-tune the GloVe model as the co-occurrence matrix would consume a lot of memory. In plus, the download speed is not so fast (~50kb/s).</p>
+<h1 id="Issue-of-vocabulary-building"><a href="#Issue-of-vocabulary-building" class="headerlink" title="Issue of vocabulary building"></a>Issue of vocabulary building</h1><p>Again, I’ve encountered the issue of inconsistency between the vocabulary and embeddings.<br>The file <code>vocab.en</code> is generated by <code>build_vocab.py</code> using learn.preprocessing.VocabularyProcessor of TensorFlow.contrib, whereas Embeddings are trained with GloVe with simple tokenization and normalisation. As the file <code>build_vocab.py</code> is part of NSpM, I didn’t change it last time and just remove those which don’t appear in the embeddings from <code>vocab.en</code>, but this time, it seems to affect the training, the BLEU score only reaches 55 around 40000 steps(until wrote this line). So I decided to use my own vocab instead of <code>build_vocab.py</code> and we would see if that could help with the BLEU score.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>This week I’ve finished many small tasks. I was going to try to fine-tune a Sentence-BERT model with the sentence representation and similarity problems, but as we have a much faster USE model and we are going to annotate our own corpus, I just stopped to handle other small issues mentioned above.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/28/GSOC-Week-Eight/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Seven" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1076,81 +1254,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/06/01/GSOC-Bonding-period/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hello-Gsoc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/09/Hello-Gsoc/">Hello GSOC and my First Meeting</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/09/Hello-Gsoc/" class="archive-article-date">
-  	<time datetime="2020-05-08T22:07:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="My-first-GSOC-Journey"><a href="#My-first-GSOC-Journey" class="headerlink" title="My first GSOC Journey"></a>My first GSOC Journey</h2><p>Hi everyone, I am Zheyuan BAI.<br>I’m so glad to annouce that <a href="https://drive.google.com/file/d/1ttHJu91fT6HLlHvHeQqdG35Cfy1ISIRv/view?usp=sharing" target="_blank" rel="noopener">my proposal</a> have been accepted by the community DBpedia for the 2020 GSOC project <strong>A Neural QA Model for DBpedia: Compositionality</strong> on 4th May.<br>This will be my first journey of GSOC and my first experience working on an opensource project. I’m very excited to be on board because the subject of this project corresponds perfectly what I am interested to do: building linked-data to make information exchange more efficient and valuable. I think this will be a good start.</p>
-<h2 id="My-First-Meeting-and-Looking-to-the-Future"><a href="#My-First-Meeting-and-Looking-to-the-Future" class="headerlink" title="My First Meeting and Looking to the Future"></a>My First Meeting and Looking to the Future</h2><p>On 8th May, scheduled at 15:00 UTC+2, I had my first meeting with my mentor Tommaso Soru and one of my co-mentors Anand Panchbhai, unfortunatly another co-mentor Jayakrishna Sahit didn’t make to join us.<br>During this first meeting, we have done self-introduciton and looked a little bit to the next few months. The concern of what I’ve planned in my proposal is that, it involves too much, I ‘m supposed to select and be focusing on less ideas which will be more faisible in a limited period(3 months) and my working result will beeasier to be delivered at last. To help me out with this situation, Tommaso suggested me to read more papers, like the refereced ones in his paper.<br>I am so glad to know my mentors and I hope that we will know each other better during this bonding period and I will have a great journey of GSOC in this summer!</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/09/Hello-Gsoc/">Read all >></a>
         </p>
       
 
