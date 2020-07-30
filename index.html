@@ -293,12 +293,16 @@
 <tr>
 <td style="text-align:center">2.which place has the highest areaRank?</td>
 <td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank ?rank } ORDER BY ASC(?rank) LIMIT 1</td>
-<td style="text-align:center"><a href="http://dbpedia.org/resource/Phnom_Penh" target="_blank" rel="noopener">http://dbpedia.org/resource/Phnom_Penh</a> (?rank =     </td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Phnom_Penh" target="_blank" rel="noopener">http://dbpedia.org/resource/Phnom_Penh</a> (?rank = dbr:Administrative_divisions_of_Camoodia; not a xsd:Integer)</td>
+</tr>
+<tr>
+<td style="text-align:center">2.which place of India has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank ?rank ; dbo:country dbr:India } ORDER BY ASC(?rank) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Tavanur" target="_blank" rel="noopener">http://dbpedia.org/resource/Tavanur</a></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>dbr:Administrative_divisions_of_Camoodia; not a xsd:Integer) |<br>| 2.which place of India has the highest areaRank?  | SELECT ?uri WHERE { ?uri dbp:areaRank ?rank ; dbo:country dbr:India } ORDER BY ASC(?rank) LIMIT 1 | <a href="http://dbpedia.org/resource/Tavanur" target="_blank" rel="noopener">http://dbpedia.org/resource/Tavanur</a> |</p>
 <p>2.Greatest amount — ORDER BY</p>
 <div class="table-container">
 <table>
