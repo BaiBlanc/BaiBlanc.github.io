@@ -16,7 +16,7 @@
 <meta property="og:description" content="IntroductionThis week, the code of Paraphraser has been optimised by Tommaso and the process becomes much faster. So instead of working on Sentence-BERT, I’ve accomplished many small tasks Basic Templ">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-28T18:30:52.000Z">
-<meta property="article:modified_time" content="2020-07-29T20:30:55.389Z">
+<meta property="article:modified_time" content="2020-07-30T08:39:16.737Z">
 <meta property="article:author" content="Zheyuan BAI">
 <meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
@@ -272,7 +272,61 @@
 </tbody>
 </table>
 </div>
-<p>We could see that the COUNT operator is relatively simple, because it involves only one single variable. And based on the non-question sentence “List …”, the SPARQL query is also simple to be transferred, just change <code>select ?x</code> to <code>select (count(*) as ?c)</code>.<br>So far, we have constructed two structures of natural language questions properly, one counts the entity itself and another counts an attribute of the entity.</p>
+<h3 id="Other-SPARQL-Operator"><a href="#Other-SPARQL-Operator" class="headerlink" title="Other SPARQL Operator"></a>Other SPARQL Operator</h3><p>1.Highest rank</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+<th style="text-align:center">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.which place has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank 1 }</td>
+<td style="text-align:center">A list of 73 URIs</td>
+</tr>
+<tr>
+<td style="text-align:center">1.which place of India has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank 1 ; dbo:country dbr:India }</td>
+<td style="text-align:center">A list of 31 URIs (weird!)</td>
+</tr>
+<tr>
+<td style="text-align:center">2.which place has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank ?rank } ORDER BY ASC(?rank) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Phnom_Penh" target="_blank" rel="noopener">http://dbpedia.org/resource/Phnom_Penh</a> (?rank =     </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>dbr:Administrative_divisions_of_Camoodia; not a xsd:Integer) |<br>| 2.which place of India has the highest areaRank?  | SELECT ?uri WHERE { ?uri dbp:areaRank ?rank ; dbo:country dbr:India } ORDER BY ASC(?rank) LIMIT 1 | <a href="http://dbpedia.org/resource/Tavanur" target="_blank" rel="noopener">http://dbpedia.org/resource/Tavanur</a> |</p>
+<p>2.Greatest amount</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+<th style="text-align:center">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.which place has the greatest amount of populationTotal?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:populationTotal ?population } Order by DESC(?population) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Giza_Governorate" target="_blank" rel="noopener">http://dbpedia.org/resource/Giza_Governorate</a></td>
+</tr>
+<tr>
+<td style="text-align:center">1.which place of Portugal has the greatest amount of populationTotal ?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:populationTotal ?population ; dbo:country dbr:Portugal } Order by DESC(?population) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Algueirão–Mem_Martins" target="_blank" rel="noopener">http://dbpedia.org/resource/Algueirão–Mem_Martins</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We could see that the COUNT operator is relatively simple, because it involves only one single variable. And based on the non-question sentence “List …”, the SPARQL query is also simple to be transferred, just change <code>select ?x</code> to <code>select (count(*) as ?c)</code>.<br>So far, we have constructed two structures of natural language questions properly, one counts the entity itself and another counts an attribute of the entity.<br>For other operators like ORDER BY, we should firstly search the orderable attributes, like numeric literals(xsd:integers and xsd:double).</p>
 <h1 id="Remote-Server"><a href="#Remote-Server" class="headerlink" title="Remote Server"></a>Remote Server</h1><p>This week, I’ve also got the support of computation from our community. Although it’s just a CPU server, it has 96 GB of RAM and at least, it could train or fine-tune the GloVe model as the co-occurrence matrix would consume a lot of memory. In plus, the download speed is not so fast (~50kb/s).</p>
 <h1 id="Issue-of-vocabulary-building"><a href="#Issue-of-vocabulary-building" class="headerlink" title="Issue of vocabulary building"></a>Issue of vocabulary building</h1><p>Again, I’ve encountered the issue of inconsistency between the vocabulary and embeddings.<br>The file <code>vocab.en</code> is generated by <code>build_vocab.py</code> using learn.preprocessing.VocabularyProcessor of TensorFlow.contrib, whereas Embeddings are trained with GloVe with simple tokenization and normalisation. As the file <code>build_vocab.py</code> is part of NSpM, I didn’t change it last time and just remove those which don’t appear in the embeddings from <code>vocab.en</code>, but this time, it seems to affect the training, the BLEU score only reaches 55 around 40000 steps(until wrote this line). So I decided to use my own vocab instead of <code>build_vocab.py</code> and we would see if that could help with the BLEU score.</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>This week I’ve finished many small tasks. I was going to try to fine-tune a Sentence-BERT model with the sentence representation and similarity problems, but as we have a much faster USE model and we are going to annotate our own corpus, I just stopped to handle other small issues mentioned above.</p>
