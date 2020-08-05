@@ -148,6 +148,120 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Nine" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/02/GSOC-Week-Nine/">GSOC-Week-Nine</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/02/GSOC-Week-Nine/" class="archive-article-date">
+  	<time datetime="2020-08-02T18:04:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, I’ve principally worked on the annotation work and the BERT classifier in order to replace or reinforce Paraphraser’s evaluation score.</p>
+<h1 id="Annotation-Work"><a href="#Annotation-Work" class="headerlink" title="Annotation Work"></a>Annotation Work</h1><p>We have shared a <a href="https://docs.google.com/document/d/1fjqGkRLMthw-l4yHXPvcNzWGFQHJX_S8GlWy22xdrWY/edit" target="_blank" rel="noopener">spread sheet</a> where we could annotate the paraphrases with 3 labels: </p>
+<blockquote>
+<ul>
+<li>-1: for a bad paraphrase which doesn’t keep the same meaning, </li>
+<li>0: for a paraphrase which keeps the same meaning but doesn’t change the structure (only lexical modifications)</li>
+<li>1: for a good paraphrase which keeps the same meaning and at the same time change the structure</li>
+</ul>
+</blockquote>
+<p>There are 9500 paraphrases in total, we do not expect to annotate them all, but hopefully, we could annotate some of them for each Ontology term and support enough samples of a Good paraphrase.</p>
+<h1 id="Fine-tune-BERT"><a href="#Fine-tune-BERT" class="headerlink" title="Fine-tune BERT"></a>Fine-tune BERT</h1><p>The annotation work is in fact preparation of the data set for the BERT fine-tuning. I’ve principally follow this <a href="https://towardsdatascience.com/bert-text-classification-using-pytorch-723dfb8b6b5b" target="_blank" rel="noopener">guide</a>, which realised a Binary Bert classifier for sequences with Pytorch.<br>I will list some of the difficulties and modifications during my reproduction of the guide, like the most evident one: we are facing a triple classification problem so the final output layer needs three units.</p>
+<h3 id="Data-Preparation"><a href="#Data-Preparation" class="headerlink" title="Data Preparation"></a>Data Preparation</h3><p>BERT model has two constraints:</p>
+<blockquote>
+<ol>
+<li>All sentences must be padded or truncated to a single, fixed length.</li>
+<li>The maximum sentence length is 512 tokens.</li>
+</ol>
+</blockquote>
+<p>The first constraint need a BERT tokenizer which automatically add a special token [PAD] and will label them as a useless token so that they don’t participate to classification.<br>The second constraint has nothing to do with us, because our templates of question are no more than 64 tokens even we use a piece word embedding (BERT use piece word to handle OOV problem).<br>Other works need to be done are listed below:</p>
+<blockquote>
+<ul>
+<li>Add special tokens [CLS] [SEP] to the start and end of each sentence.</li>
+<li>Explicitly differentiate real tokens from padding tokens with the “attention mask”.</li>
+</ul>
+</blockquote>
+<h3 id="Unbalanced-data-problem"><a href="#Unbalanced-data-problem" class="headerlink" title="Unbalanced data problem"></a>Unbalanced data problem</h3><p>Until the redaction of the post, the proportion of the three labels[-1, 0, 1] is 1:1.5:6, which indicates the class imbalance of our data set.<br>I didn’t pay much attention at first, but found that the classifier only predicts -1 and 0 on my test set samples.</p>
+<p>Then I came up with two ideas to address this problem:</p>
+<ol>
+<li>The first follows the idea of over-sampling and under-sampling, we could manually add some good paraphrases to each group of candidates, and remove some not-good paraphrases.</li>
+<li>The second one is to add weights to the loss function</li>
+</ol>
+<p>I didn’t choose the first one because I would like to see how good this Paraphraser could do with the least human intelligence and intervention. To utilise a customized cross-entropy loss function, I created a new class of model which inherit the pre-trained BERT-classifier and rewrite the loss function.</p>
+<p>It seems at last the classifier could give a acceptable result:</p>
+<blockquote>
+<p>When is the birth date of “A” ? When is the birthday of “A” ? 0<br>When is the birth date of “A” ? When was “A” born ? 1<br>When is the birth date of “A” ? Where does “A” come from ? -1<br>When is the birth date of “A” ? What is the birth name of “A” ? 1</p>
+</blockquote>
+<p>These sentences have never appeared in the data set, except for the last one, it has done a great job.<br>So I decided to use the classifier to reinforce the Evaluation Score until we will have got enough annotated samples to train a good classifier.</p>
+<p>Now the scoring system works as below:</p>
+<script type="math/tex; mode=display">Score = 0.05 * (EDS+EDT) + Cosine\ Similarity + Label</script><p>The predicted label (-1, 0, 1) is directly added to the precedent score.</p>
+<h3 id="Strange-CUDA-runtime-error"><a href="#Strange-CUDA-runtime-error" class="headerlink" title="Strange CUDA runtime error"></a>Strange CUDA runtime error</h3><p>An error happened “Status: device-side assert triggered”, caused by ‘label -1’. A label “-1” is forbidden in such a model, so before starting training on the data set, I also add 1 to all these labels and minus 1 after the predictions.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>A BERT pre-trained model is really helpful when we just have limited samples for this classification task ( about 1000 samples). I reaches 0.8 as the macro-recall score, and hopefully, with more and more annotations done, the classifier could work better.<br>Next week, I would start the training of NMT model with paraphrases, but before that, I will also tackle the inconsistency issue and involve SPARQL operators to the template set.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/02/GSOC-Week-Nine/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Eight" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -218,11 +332,11 @@
 <tbody>
 <tr>
 <td style="text-align:center">1.how many airlines are there?</td>
-<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:airline }</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:Airline }</td>
 </tr>
 <tr>
-<td style="text-align:center">2.how many destinations does <Airline> have?</Airline></td>
-<td style="text-align:center">select COUNT(*) as ?c { <Airline> dbo:destination ?x }</Airline></td>
+<td style="text-align:center">2.how many destinations does “Airline” have?</td>
+<td style="text-align:center">select (COUNT(*)) as ?c { “Airline” dbo:destination ?x }</td>
 </tr>
 </tbody>
 </table>
@@ -264,7 +378,7 @@
 </tr>
 <tr>
 <td style="text-align:center">how many airlines whose destination is China</td>
-<td style="text-align:center">select (count(<em>) as ?c) { ?x a dbo:Airline ; dbo:destination dbr:China }  OR  select (count(</em>) as ?c) { ?x dbo:destination dbr:China }</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:Airline ; dbo:destination dbr:China }</td>
 </tr>
 </tbody>
 </table>
@@ -1253,94 +1367,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/06/07/GSOC-Week-One/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GSOC-Bonding-period" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/01/GSOC-Bonding-period/">GSOC Bonding period</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/01/GSOC-Bonding-period/" class="archive-article-date">
-  	<time datetime="2020-06-01T12:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The bonding period has been formally ended(from 4th May to 31st May), and the coding perio begins.</p>
-<p>In this report, I will present some of my thoughts during this period as well as my decision on the direction of next 3 months’ research and development.</p>
-<h2 id="About-Neural-QA-and-NSpM-1"><a href="#About-Neural-QA-and-NSpM-1" class="headerlink" title="About Neural-QA and NSpM[1]"></a>About Neural-QA and NSpM[1]</h2><p>Our neural QA system is principally based on the project <a href="https://github.com/AKSW/NSpM" target="_blank" rel="noopener">NSpM</a>, which uses the query-question template and the LSTB based <a href="https://github.com/tensorflow/nmt/tree/0be864257a76c151eef20ea689755f08bc1faf4e" target="_blank" rel="noopener">NMT model</a>.</p>
-<p>The manual generation of templates aims to use the least human effort to generate training dataset, instead of using further human work like LC-QuAD. The training data, which are NL questions and SPARQL pairs, will be learned as a Machine Translation problem by the NMT model.</p>
-<h2 id="Direction-of-research-and-development"><a href="#Direction-of-research-and-development" class="headerlink" title="Direction of research and development"></a>Direction of research and development</h2><p>I’ve gone through several papers, and I have finally made my decision to work on the question coverage problem using NL generation(probably other methods). I case that we could not have a meeting these days I am going to list some of my arguments and doubts here:<br>I’m going to define our NSpM system as a Restricted-domain QA system, as we are training and test on a relatively restricted dataset, like Monument, Person, etc. The compositional problem would be different from an Open-domain QA system(like Stuart’s work and the papers referenced in his github page), and I think our main problem would be the composition of templates and the coverage of utterance. The former has already been solved by Anand so I would be rather working on the latter.<br>As our template-query pair set is manually created, the NL queries generated will be syntactically isomorphic(they have the same syntax)[2]. I think the level of utterance coverage could be improved by adding more syntactic variablility with NL generation(the main idea is already discussed in my proposal), which could also impove the semantic variability. The main concern here is that this process will cost a lot of time if we use it on all the templates even in restricted-domain of dataset, and here are two possible ideas which can more or less alleviate the time-consuming problem:</p>
-<blockquote>
-<ol>
-<li>Process NL generation only on simple templates, and let them be composed to “spread” into compositional templates</li>
-<li>Process NL generation only on top-ranked templates</li>
-</ol>
-</blockquote>
-<p>The first point makes better sense to my mentor Tommaso and to me.<br>For other aspects, in keeping the RNN-LSTM model, another NMT model with CNN should be an alternative option, as it is proved to be outperforming[3] in NL2SPARQL missions.</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Tommaso Soru, Edgard Marx, André Valdestilhas, Diego Esteves, Diego Moussallem, Gustavo Publio. (2018). Neural Machine Translation for Query Construction and Composition.</p>
-<p>[2] Abdalghani Abujabal et al. (2018) Never-Ending Learning for Open-Domain Question Answering over Knowledge Bases</p>
-<p>[3] Xiaoyu Yin et al. (2019) Neural Machine Translating from Natural Language to SPARQL</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/01/GSOC-Bonding-period/">Read all >></a>
         </p>
       
 

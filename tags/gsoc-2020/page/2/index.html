@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Zheyuan BAI&#39;s Blog</title>
+  <title>Tag: gsoc-2020 | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:url" content="http://baiblanc.github.io/page/2/index.html">
+<meta property="og:url" content="http://baiblanc.github.io/tags/gsoc-2020/page/2/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Zheyuan BAI">
@@ -148,124 +148,34 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-GSOC-Bonding-period" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/01/GSOC-Bonding-period/">GSOC Bonding period</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/01/GSOC-Bonding-period/" class="archive-article-date">
-  	<time datetime="2020-06-01T12:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
-</a>
-        
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The bonding period has been formally ended(from 4th May to 31st May), and the coding perio begins.</p>
-<p>In this report, I will present some of my thoughts during this period as well as my decision on the direction of next 3 months’ research and development.</p>
-<h2 id="About-Neural-QA-and-NSpM-1"><a href="#About-Neural-QA-and-NSpM-1" class="headerlink" title="About Neural-QA and NSpM[1]"></a>About Neural-QA and NSpM[1]</h2><p>Our neural QA system is principally based on the project <a href="https://github.com/AKSW/NSpM" target="_blank" rel="noopener">NSpM</a>, which uses the query-question template and the LSTB based <a href="https://github.com/tensorflow/nmt/tree/0be864257a76c151eef20ea689755f08bc1faf4e" target="_blank" rel="noopener">NMT model</a>.</p>
-<p>The manual generation of templates aims to use the least human effort to generate training dataset, instead of using further human work like LC-QuAD. The training data, which are NL questions and SPARQL pairs, will be learned as a Machine Translation problem by the NMT model.</p>
-<h2 id="Direction-of-research-and-development"><a href="#Direction-of-research-and-development" class="headerlink" title="Direction of research and development"></a>Direction of research and development</h2><p>I’ve gone through several papers, and I have finally made my decision to work on the question coverage problem using NL generation(probably other methods). I case that we could not have a meeting these days I am going to list some of my arguments and doubts here:<br>I’m going to define our NSpM system as a Restricted-domain QA system, as we are training and test on a relatively restricted dataset, like Monument, Person, etc. The compositional problem would be different from an Open-domain QA system(like Stuart’s work and the papers referenced in his github page), and I think our main problem would be the composition of templates and the coverage of utterance. The former has already been solved by Anand so I would be rather working on the latter.<br>As our template-query pair set is manually created, the NL queries generated will be syntactically isomorphic(they have the same syntax)[2]. I think the level of utterance coverage could be improved by adding more syntactic variablility with NL generation(the main idea is already discussed in my proposal), which could also impove the semantic variability. The main concern here is that this process will cost a lot of time if we use it on all the templates even in restricted-domain of dataset, and here are two possible ideas which can more or less alleviate the time-consuming problem:</p>
-<blockquote>
-<ol>
-<li>Process NL generation only on simple templates, and let them be composed to “spread” into compositional templates</li>
-<li>Process NL generation only on top-ranked templates</li>
-</ol>
-</blockquote>
-<p>The first point makes better sense to my mentor Tommaso and to me.<br>For other aspects, in keeping the RNN-LSTM model, another NMT model with CNN should be an alternative option, as it is proved to be outperforming[3] in NL2SPARQL missions.</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Tommaso Soru, Edgard Marx, André Valdestilhas, Diego Esteves, Diego Moussallem, Gustavo Publio. (2018). Neural Machine Translation for Query Construction and Composition.</p>
-<p>[2] Abdalghani Abujabal et al. (2018) Never-Ending Learning for Open-Domain Question Answering over Knowledge Bases</p>
-<p>[3] Xiaoyu Yin et al. (2019) Neural Machine Translating from Natural Language to SPARQL</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
+    
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/01/GSOC-Bonding-period/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hello-Gsoc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+        <div class="archives">
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/09/Hello-Gsoc/">Hello GSOC and my First Meeting</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/09/Hello-Gsoc/" class="archive-article-date">
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/05/09/Hello-Gsoc/" class="archive-article-date">
   	<time datetime="2020-05-08T22:07:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-09</time>
 </a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="My-first-GSOC-Journey"><a href="#My-first-GSOC-Journey" class="headerlink" title="My first GSOC Journey"></a>My first GSOC Journey</h2><p>Hi everyone, I am Zheyuan BAI.<br>I’m so glad to annouce that <a href="https://drive.google.com/file/d/1ttHJu91fT6HLlHvHeQqdG35Cfy1ISIRv/view?usp=sharing" target="_blank" rel="noopener">my proposal</a> have been accepted by the community DBpedia for the 2020 GSOC project <strong>A Neural QA Model for DBpedia: Compositionality</strong> on 4th May.<br>This will be my first journey of GSOC and my first experience working on an opensource project. I’m very excited to be on board because the subject of this project corresponds perfectly what I am interested to do: building linked-data to make information exchange more efficient and valuable. I think this will be a good start.</p>
-<h2 id="My-First-Meeting-and-Looking-to-the-Future"><a href="#My-First-Meeting-and-Looking-to-the-Future" class="headerlink" title="My First Meeting and Looking to the Future"></a>My First Meeting and Looking to the Future</h2><p>On 8th May, scheduled at 15:00 UTC+2, I had my first meeting with my mentor Tommaso Soru and one of my co-mentors Anand Panchbhai, unfortunatly another co-mentor Jayakrishna Sahit didn’t make to join us.<br>During this first meeting, we have done self-introduciton and looked a little bit to the next few months. The concern of what I’ve planned in my proposal is that, it involves too much, I ‘m supposed to select and be focusing on less ideas which will be more faisible in a limited period(3 months) and my working result will beeasier to be delivered at last. To help me out with this situation, Tommaso suggested me to read more papers, like the refereced ones in his paper.<br>I am so glad to know my mentors and I hope that we will know each other better during this bonding period and I will have a great journey of GSOC in this summer!</p>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/05/09/Hello-Gsoc/">Hello GSOC and my First Meeting</a>
+    </h1>
+  
 
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -277,114 +187,21 @@
 		</ul>
 	</div>
 
-      
+          
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/09/Hello-Gsoc/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
+    </div></section>
+  
+
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/07/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/07/hello-world/" class="archive-article-date">
-  	<time datetime="2020-05-07T17:53:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/07/hello-world/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/tags/gsoc-2020/">&amp;laquo; Prev</a><a class="page-number" href="/tags/gsoc-2020/">1</a><span class="page-number current">2</span>
     </nav>
   
 
@@ -408,10 +225,10 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
