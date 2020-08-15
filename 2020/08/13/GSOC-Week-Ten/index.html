@@ -19,8 +19,10 @@
 <meta property="og:image" content="http://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/256units_accu.png">
 <meta property="og:image" content="http://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/512units_bleu.png">
 <meta property="og:image" content="http://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/512units_accu.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/512units_bleu2.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/512units_accu2.png">
 <meta property="article:published_time" content="2020-08-13T19:03:46.000Z">
-<meta property="article:modified_time" content="2020-08-14T20:21:34.203Z">
+<meta property="article:modified_time" content="2020-08-15T13:51:44.595Z">
 <meta property="article:author" content="Zheyuan BAI">
 <meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
@@ -188,6 +190,8 @@
 <p><img src="/2020/08/13/GSOC-Week-Ten/256units_accu.png" alt><br>Figure2: Accuracy of a 256-unit 2-layer LSTM model</p>
 <p>The only difference from week-seven is that I’ve used an paraphrased templet set without any SPARQL operators. Then I used a more complex model and the problem solved magically:<br><img src="/2020/08/13/GSOC-Week-Ten/512units_bleu.png" alt><br>Figure3: BLEU score of a 512-unit 2-layer LSTM model</p>
 <p><img src="/2020/08/13/GSOC-Week-Ten/512units_accu.png" alt><br>Figure4: Accuracy of a 512-unit 2-layer LSTM model</p>
+<p><img src="/2020/08/13/GSOC-Week-Ten/512units_bleu2.png" alt><br>Figure5: BLEU score of a 512-unit 2-layer LSTM model for less ontology terms</p>
+<p><img src="/2020/08/13/GSOC-Week-Ten/512units_accu2.png" alt><br>Figure6: Accuracy of a 512-unit 2-layer LSTM model for less ontology terms</p>
 <p>At last, I’ve doubled the size of the model using a 512-unit 2-layer LSTM model and the self-created vocabulary. I will make another try with this size and <code>build_vocab</code> module to see whether the vocabulary affect anything during training.</p>
 <h3 id="Other-works"><a href="#Other-works" class="headerlink" title="Other works"></a>Other works</h3><p>As last week, Tommaso proposed the training set should be shuffled before fine-tune the BERT classifier, I used DataLoader package to randomly split the training set into batches.</p>
 <p>I’ve continually contributed to the <a href="https://docs.google.com/spreadsheets/d/1H_oFFY3xkufdp4RZ6Md2lZJcU-iaS1RhoNQ2q8ScGgE/edit?ts=5f2c134d#gid=0" target="_blank" rel="noopener">annotation work</a> and would have accomplished 1000 this week.</p>
