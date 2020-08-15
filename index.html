@@ -172,8 +172,9 @@
 <blockquote>
 <p>When building the vocabulary for the NMT model, our <code>build_vocab.py</code> module not only tokenize the corpus, but also have other specific operations, like:</p>
 <blockquote>
-<p>“RKDartists” -&gt; “RK” and “Dartists”<br>“EntrezGene” -&gt; “Entrez” and “Gene”<br>“high-courier” -&gt; “high” and “courier”<br>“i̇̇smet” -&gt; “̇smet” (To be noted, the “i” is a special character with circumflex accent)<br>This modifications may cause a lot of \<unk> tokens appear in the input sequences because they cannot match any token in the corpus vocabulary.</unk></p>
+<p>“RKDartists” -&gt; “RK” and “Dartists”<br>“EntrezGene” -&gt; “Entrez” and “Gene”<br>“high-courier” -&gt; “high” and “courier”<br>“i̇̇smet” -&gt; “̇smet” (To be noted, the “i” is a special character with circumflex accent)</p>
 </blockquote>
+<p>This modifications may cause a lot of \<unk> tokens appear in the input sequences because they cannot match any token in the corpus vocabulary.</unk></p>
 </blockquote>
 <p>As a result, I have skipped the <code>build_vocab</code> module and build the corpus vocabulary totally based on tokenization and little normalization to avoid punctuations like “st.” to “st” .<br>But then, I found that maybe it’s not, or at least not only, the problem of vocabulary.</p>
 <h3 id="Size-of-the-model"><a href="#Size-of-the-model" class="headerlink" title="Size of the model!"></a>Size of the model!</h3><p>Whether I used the self created vocab or the <code>build_vocab</code> vocabulary and tried to reproduce the work of <a href="https://baiblanc.github.io/2020/07/17/GSOC-Week-Seven/">week-seven</a>, the performance of the model on test set are always not acceptable (BLEU score ~ 60, and accuracy &lt; 20):<br><img src="/2020/08/13/GSOC-Week-Ten/256units_bleu.png" alt><br>Figure1: BLEU score of a 256-unit 2-layer LSTM model</p>
