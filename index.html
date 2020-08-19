@@ -148,6 +148,131 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Eleven" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/18/GSOC-Week-Eleven/">GSOC-Week_Eleven</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/18/GSOC-Week-Eleven/" class="archive-article-date">
+  	<time datetime="2020-08-18T19:38:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Evaluation-of-Paraphraser"><a href="#Evaluation-of-Paraphraser" class="headerlink" title="Evaluation of Paraphraser"></a>Evaluation of Paraphraser</h1><h3 id="A-brief-conclusion-of-the-results"><a href="#A-brief-conclusion-of-the-results" class="headerlink" title="A brief conclusion of the results"></a>A brief conclusion of the results</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Model</th>
+<th style="text-align:center">Embeddings</th>
+<th style="text-align:center">Paraphraser</th>
+<th style="text-align:center">Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">512 units, 2 layer LSTM</td>
+<td style="text-align:center">50d GloVe</td>
+<td style="text-align:center">No</td>
+<td style="text-align:center">0.365</td>
+</tr>
+<tr>
+<td style="text-align:center">512 units, 2 layer LSTM</td>
+<td style="text-align:center">50d GloVe</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">0.483</td>
+</tr>
+<tr>
+<td style="text-align:center">512 units, 2 layer LSTM</td>
+<td style="text-align:center">300d GloVe</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">0.495</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Evaluations-with-lowercase-and-separated-punctuations"><a href="#Evaluations-with-lowercase-and-separated-punctuations" class="headerlink" title="Evaluations with lowercase and separated punctuations"></a>Evaluations with lowercase and separated punctuations</h3><p>Last saturday, Tommaso pointed out that as the test set should also be lower-cased and tokenized before sent to the nmt model. This kind of preparation could be presented as the example below:</p>
+<blockquote>
+<p>1.What is the time zone of Salt Lake City?<br>—&gt;<br>1.what is the time zone of salt lake city ?</p>
+<p>2.What is the highest mountain in Germany?<br>—&gt;<br>2.what is the highest mountain in germany ?</p>
+</blockquote>
+<p>The effect is also immediate, with the same trained model, it give two different SPARQL queries:</p>
+<blockquote>
+<p>1.select var_x where brack_open dbr_Kusugal dbo_timeZone var_x brack_close<br>—&gt;<br>1.select var_x where brack_open dbr_Fish_Lake_Valley dbo_timeZone var_x brack_close</p>
+<p>2.select var_x where brack_open dbr_Saint-Aubin-Routot dbo_highestMountain var_x brack_close<br>—&gt;<br>2.select var_x where brack_open dbr_Prague_10 dbo_lowestMountain var_x brack_close</p>
+</blockquote>
+<p>We could see that both of them matches correctly the property <code>timeZone</code>, and the second one catches more information of the entity <code>Salt Lake City</code>, it matches an entity with <code>lake</code> in the name, while the first one doesn’t catches any information.<br>This point should be remembered in the future research that even a small punctuation and cases could change a lot to the model, because they strictly correspond to the vocabulary and a single modification will affect the final prediction.</p>
+<h3 id="Comparison-with-the-original-NSpM-model-without-Paraphraser"><a href="#Comparison-with-the-original-NSpM-model-without-Paraphraser" class="headerlink" title="Comparison with the original NSpM model without Paraphraser"></a>Comparison with the original NSpM model without Paraphraser</h3><p>As the test set <code>qald-9</code> is not suitable for the evaluation(0 or very low f1-score), Tommaso proposed to use the test set splitted from the NSpM model itself. I trained a model with 512 units, 2 layer LSTM and 50-dimension GLoVe embedding with the same ontology terms as the model I trained last week but without Paraphraser, and here shows the BLEU/Accuracy curves:<br><img src="/2020/08/18/GSOC-Week-Eleven/512units_basic_bleu.png" alt><br>512 units, 2 layer LSTM, 50d GloVe, without Paraphraser BLEU score curve<br><img src="/2020/08/18/GSOC-Week-Eleven/512units_basic_accu.png" alt><br>512 units, 2 layer LSTM, 50d GloVe, without Paraphraser accuracy curve</p>
+<p>The final accuracy on test set is 4317/11816 which gives <strong>0.365</strong><br>To be fair, I used the model with the same meta-parameters, and this time, with Paraphraser. The accuracy on the same test set is 5711/11816, which gives <strong>0.483</strong></p>
+<h3 id="Comparison-between-different-dimensions-of-GloVe-embeddings"><a href="#Comparison-between-different-dimensions-of-GloVe-embeddings" class="headerlink" title="Comparison between different dimensions of GloVe embeddings"></a>Comparison between different dimensions of GloVe embeddings</h3><p>I used only 50 dimensions of GloVe in the last weeks’ training, Tommaso proposed that more dimensions could be helpful. As the largest available pre-trained GloVe model is of 300 dimensions, so I make comparison between 300d GloVe and 50d GloVe, they used the same train/validation/test split of data during training:</p>
+<p><img src="/2020/08/18/GSOC-Week-Eleven/512units_50d_bleu.png" alt><br>512 units, 2 layer LSTM, 50d GloVe, with Paraphraser BLEU score curve<br><img src="/2020/08/18/GSOC-Week-Eleven/512units_50d_accu.png" alt><br>512 units, 2 layer LSTM, 50d GloVe, with Paraphraser accuracy curve</p>
+<p><img src="/2020/08/18/GSOC-Week-Eleven/512units_300d_bleu.png" alt><br>512 units, 2 layer LSTM, 300d GloVe, with Paraphraser BLEU score curve<br><img src="/2020/08/18/GSOC-Week-Eleven/512units_300d_accu.png" alt><br>512 units, 2 layer LSTM, 300d GloVe, with Paraphraser accuracy curve</p>
+<p>We could see that the training of 300d GloVe is a little bit faster than 50d GloVe: it reaches 90 BLEU score 10k steps before 50d GloVe’s model. The final results are close, 300d Glove is a bit higher.<br>I also test the 300d GloVe model with the test set I used above, and it gives an Accuracy of 5844/11816 = <strong>0.495</strong>, which is also a bit higher than 50d GloVe.</p>
+<h1 id="Num-unit-vs-Dimension-of-Embeddings"><a href="#Num-unit-vs-Dimension-of-Embeddings" class="headerlink" title="Num_unit vs Dimension of Embeddings"></a>Num_unit vs Dimension of Embeddings</h1><p>As far as I understand and searched on the Internet, the <a href="https://www.tensorflow.org/api_docs/python/tf/compat/v1/nn/dynamic_rnn" target="_blank" rel="noopener">documentation</a>, as well as the codes of NMT, the input size is not necessarily equal to <code>num_unit</code>. The <a href="https://github.com/tensorflow/nmt/blob/0be864257a76c151eef20ea689755f08bc1faf4e/nmt/model.py#L304" target="_blank" rel="noopener">code1</a>, <a href="https://github.com/tensorflow/nmt/blob/b278487980832417ad8ac701c672b5c3dc7fa553/nmt/model_helper.py#L278" target="_blank" rel="noopener">code2</a>show that the input size will be equal to num_unit if embed files are not given, if embeddings are pre-trained, then the input size will equal to the dimension of embeddings (here 50 or 300).<br>The <code>num_unit</code> in fact controll the dimension of hidden state in each LSTM cell, and the difference between input_size and hidden_state_size could be simply solved by a weight matrix.<br>This explains why increasing <code>num_unit</code> while using the same dimension of embeddings could also improve the performance of NMT.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We could see that the final accuracy of NSpM with Paraphraser increases <strong>0.118</strong>(0.365 —&gt;  0.483) in comparison with the model without Paraphraser, we could say that the Paraphraser could help the model with the questions which don’t differ too much like <code>qald-9</code>.</p>
+<p>The miss-linked entities could be solved by introducing more examples per entity, but the number of examples is limited by the Knowledge Base of DBpedia itself and the variable of <code>EXAMPLES_PER_TEMPLATE</code>. The Knowledge Base is what we could not change, so we may only increase <code>EXAMPLES_PER_TEMPLATE</code>, but this does’t mean for sure that examples for all the entities are increased. This should be discussed for the next meeting.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/18/GSOC-Week-Eleven/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Ten" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1184,139 +1309,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/06/21/RNN-vs-CNN-vs-Transformer/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GSOC-Week-Two" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/12/GSOC-Week-Two/">GSOC-Week-Two</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/12/GSOC-Week-Two/" class="archive-article-date">
-  	<time datetime="2020-06-12T20:14:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This week, I’ve finally started my coding works(commits and merges to the community).<br>Based on Anand’s work, I’ve created my pipeline and added the Paraphraser to it, this work will be briefly introduced in the first part.<br>I’ve also concluded some of the available resources that correspond to our Template Expansion idea, which is presented in the second part of the blog.</p>
-<h2 id="Creation-of-pipeline"><a href="#Creation-of-pipeline" class="headerlink" title="Creation of pipeline"></a>Creation of pipeline</h2><p>The whole pipeline is based on Anand’s pieline3, which get resources from DBpedia and generates the original template set.<br>My pipeline adds a Paraphraser before the stockage of templates, this Paraphraser could be different Paraphrase Generation models or even other approaches, for instance, we use T5 pre-trained model.<br>The pipeline then evaluates the generated paraphrases(candidates) and determines whether to expand, replace or abandon the original template.</p>
-<h3 id="Paraphraser"><a href="#Paraphraser" class="headerlink" title="Paraphraser"></a>Paraphraser</h3><p>After the creation of templates and the elimination of the never asked queries, the questions will be passed to the Paraphraser.</p>
-<ul>
-<li><code>paraphrase_questions.py</code>: This aims to paraphrase the question template and return several possible candidates with their scores (potentially textual similarity, POS taggings, etc.). The main pipeline will select the templates with a strategy and add it/them to the template set.</li>
-<li><code>textual_similarity.py</code>: This aims to calculate the scores of similarity between the candidates and the original question template.</li>
-</ul>
-<p>To test the Paraphraser:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python paraphrase_questions.py --sentence <span class="string">"what is your name ?"</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="Other-Semantic-similarity"><a href="#Other-Semantic-similarity" class="headerlink" title="Other Semantic similarity:"></a>Other Semantic similarity:</h4><p>Besides the cosine similarity and the edit distance(levenshtein distance) mentioned in <a href="https://baiblanc.github.io/2020/06/07/GSOC-Week-One/">last week’s blog</a>, an advanced semantic similarity could also be used. </p>
-<script type="math/tex; mode=display">similarity(u,v) = (1-\frac{arccos(\frac{u*v}{|u|*|v|})}{π})</script><p>As the paper “Universal Sentence Encoder”[1] proposed, they found that using a similarity based on angular distance performs better on average than raw cosine similarity.<br>I’ve also done some tests and found that this advanced semantic similarity seems more reasonable when the two sentences are similar, but when the two sentences are totally different semantically, this advanced approach will still give a relatively high score: 0.6(advanced) vs 0.3(cosine) </p>
-<h2 id="Insights-on-available-resources"><a href="#Insights-on-available-resources" class="headerlink" title="Insights on available resources"></a>Insights on available resources</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Resource</th>
-<th style="text-align:center">Input</th>
-<th style="text-align:center">Output</th>
-<th style="text-align:center">Main idea</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">NSpM Generator</td>
-<td style="text-align:center">Template set</td>
-<td style="text-align:center">NL2Sparql data set</td>
-<td style="text-align:center">Replacing the placeholder with concerned labels</td>
-</tr>
-<tr>
-<td style="text-align:center">Anand’s pipeline</td>
-<td style="text-align:center">Ontology name(from DBpedia)</td>
-<td style="text-align:center">Template set</td>
-<td style="text-align:center">Rule-based</td>
-</tr>
-<tr>
-<td style="text-align:center">Stuart’s pipeline</td>
-<td style="text-align:center">Entity name(from wiki pages)</td>
-<td style="text-align:center">Template set</td>
-<td style="text-align:center">POS-tagging + Rule-based</td>
-</tr>
-<tr>
-<td style="text-align:center">Paraphraser</td>
-<td style="text-align:center">NL template</td>
-<td style="text-align:center">Paraphrased NL template</td>
-<td style="text-align:center">Paraphrase Generation model</td>
-</tr>
-<tr>
-<td style="text-align:center">Universal Sentence Encoder</td>
-<td style="text-align:center">A sequence of tokens</td>
-<td style="text-align:center">Sentence embedding</td>
-<td style="text-align:center">Transformer encoder + sum of element-wise of word representation/ DAN</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Our current pipeline is composed like this:</p>
-<blockquote>
-<p>Anand’s pipeline —&gt; Paraphraser+USE —&gt; NSpM Generator</p>
-</blockquote>
-<p>Except for NSpM Generator, other parts (Anand’s pipeline, Paraphraser, USE) could all be replaced or cooperated with other approaches.<br>For example, if we need more simple templates, we could make use of Stuart’s pipeline in determining the proper Entity Names (like the top N ranked entities in the specific Ontology). In this case, we may not need the Paraphraser as the template set is already expanded.<br>Another example, USE could be replaced by the pre-trained Hidden layer of BERT, as USE seems to ignore the order of the word in a sentence. <a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">Bert-as-service</a> is available for example, and there are a lot of variant of BERT which gives better sentence embeddings.<br>In regard to the NSpM pipeline: the Learner, which uses a <strong>LSTM based model</strong> could be replaced by a <strong>Transformer model</strong>, like Stuart’s work, or a <strong>CNN model</strong> mentioned in my <a href="https://baiblanc.github.io/2020/06/01/GSOC-Bonding-period/">previous blog</a>.</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Daniel Cera, Yinfei Yanga, Sheng-yi Kong et al. (2018.4). Universal Sentence Encoder</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/12/GSOC-Week-Two/">Read all >></a>
         </p>
       
 

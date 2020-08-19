@@ -148,6 +148,139 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Two" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/12/GSOC-Week-Two/">GSOC-Week-Two</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/12/GSOC-Week-Two/" class="archive-article-date">
+  	<time datetime="2020-06-12T20:14:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This week, I’ve finally started my coding works(commits and merges to the community).<br>Based on Anand’s work, I’ve created my pipeline and added the Paraphraser to it, this work will be briefly introduced in the first part.<br>I’ve also concluded some of the available resources that correspond to our Template Expansion idea, which is presented in the second part of the blog.</p>
+<h2 id="Creation-of-pipeline"><a href="#Creation-of-pipeline" class="headerlink" title="Creation of pipeline"></a>Creation of pipeline</h2><p>The whole pipeline is based on Anand’s pieline3, which get resources from DBpedia and generates the original template set.<br>My pipeline adds a Paraphraser before the stockage of templates, this Paraphraser could be different Paraphrase Generation models or even other approaches, for instance, we use T5 pre-trained model.<br>The pipeline then evaluates the generated paraphrases(candidates) and determines whether to expand, replace or abandon the original template.</p>
+<h3 id="Paraphraser"><a href="#Paraphraser" class="headerlink" title="Paraphraser"></a>Paraphraser</h3><p>After the creation of templates and the elimination of the never asked queries, the questions will be passed to the Paraphraser.</p>
+<ul>
+<li><code>paraphrase_questions.py</code>: This aims to paraphrase the question template and return several possible candidates with their scores (potentially textual similarity, POS taggings, etc.). The main pipeline will select the templates with a strategy and add it/them to the template set.</li>
+<li><code>textual_similarity.py</code>: This aims to calculate the scores of similarity between the candidates and the original question template.</li>
+</ul>
+<p>To test the Paraphraser:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python paraphrase_questions.py --sentence <span class="string">"what is your name ?"</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Other-Semantic-similarity"><a href="#Other-Semantic-similarity" class="headerlink" title="Other Semantic similarity:"></a>Other Semantic similarity:</h4><p>Besides the cosine similarity and the edit distance(levenshtein distance) mentioned in <a href="https://baiblanc.github.io/2020/06/07/GSOC-Week-One/">last week’s blog</a>, an advanced semantic similarity could also be used. </p>
+<script type="math/tex; mode=display">similarity(u,v) = (1-\frac{arccos(\frac{u*v}{|u|*|v|})}{π})</script><p>As the paper “Universal Sentence Encoder”[1] proposed, they found that using a similarity based on angular distance performs better on average than raw cosine similarity.<br>I’ve also done some tests and found that this advanced semantic similarity seems more reasonable when the two sentences are similar, but when the two sentences are totally different semantically, this advanced approach will still give a relatively high score: 0.6(advanced) vs 0.3(cosine) </p>
+<h2 id="Insights-on-available-resources"><a href="#Insights-on-available-resources" class="headerlink" title="Insights on available resources"></a>Insights on available resources</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Resource</th>
+<th style="text-align:center">Input</th>
+<th style="text-align:center">Output</th>
+<th style="text-align:center">Main idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">NSpM Generator</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">NL2Sparql data set</td>
+<td style="text-align:center">Replacing the placeholder with concerned labels</td>
+</tr>
+<tr>
+<td style="text-align:center">Anand’s pipeline</td>
+<td style="text-align:center">Ontology name(from DBpedia)</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">Rule-based</td>
+</tr>
+<tr>
+<td style="text-align:center">Stuart’s pipeline</td>
+<td style="text-align:center">Entity name(from wiki pages)</td>
+<td style="text-align:center">Template set</td>
+<td style="text-align:center">POS-tagging + Rule-based</td>
+</tr>
+<tr>
+<td style="text-align:center">Paraphraser</td>
+<td style="text-align:center">NL template</td>
+<td style="text-align:center">Paraphrased NL template</td>
+<td style="text-align:center">Paraphrase Generation model</td>
+</tr>
+<tr>
+<td style="text-align:center">Universal Sentence Encoder</td>
+<td style="text-align:center">A sequence of tokens</td>
+<td style="text-align:center">Sentence embedding</td>
+<td style="text-align:center">Transformer encoder + sum of element-wise of word representation/ DAN</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Our current pipeline is composed like this:</p>
+<blockquote>
+<p>Anand’s pipeline —&gt; Paraphraser+USE —&gt; NSpM Generator</p>
+</blockquote>
+<p>Except for NSpM Generator, other parts (Anand’s pipeline, Paraphraser, USE) could all be replaced or cooperated with other approaches.<br>For example, if we need more simple templates, we could make use of Stuart’s pipeline in determining the proper Entity Names (like the top N ranked entities in the specific Ontology). In this case, we may not need the Paraphraser as the template set is already expanded.<br>Another example, USE could be replaced by the pre-trained Hidden layer of BERT, as USE seems to ignore the order of the word in a sentence. <a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">Bert-as-service</a> is available for example, and there are a lot of variant of BERT which gives better sentence embeddings.<br>In regard to the NSpM pipeline: the Learner, which uses a <strong>LSTM based model</strong> could be replaced by a <strong>Transformer model</strong>, like Stuart’s work, or a <strong>CNN model</strong> mentioned in my <a href="https://baiblanc.github.io/2020/06/01/GSOC-Bonding-period/">previous blog</a>.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Daniel Cera, Yinfei Yanga, Sheng-yi Kong et al. (2018.4). Universal Sentence Encoder</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/12/GSOC-Week-Two/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-One" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
