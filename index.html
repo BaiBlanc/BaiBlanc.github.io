@@ -148,6 +148,86 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Final-Report" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/27/GSOC-Final-Report/">GSOC-Final-Report</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/27/GSOC-Final-Report/" class="archive-article-date">
+  	<time datetime="2020-08-27T20:28:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Gsoc 2020 is coming to an end, I’m very glad to have spent the last 3 months with the community DBpedia, in particular with my mentors Tommaso and Anand.<br>With one of the biggest Knowledge Graph, how to make good use of this is very important and interesting. As the extraction of information from such knowledge base requires skills of making SPARQL query, it is interesting to provide users with more friendly and easier interfaces that save the trouble of learning the formal query. Knowledge Graph Question Answering (KGQA) system is such a solution.<br>My works principally focused on the question coverage problem of such a system, which tries to understand more questions asked by users and parse them into correct SPARQL queries.</p>
+<h1 id="A-quick-conclusion"><a href="#A-quick-conclusion" class="headerlink" title="A quick conclusion"></a>A quick conclusion</h1><p>During the last three months, I have been working on DBpedia’s QA system — <a href="https://github.com/dbpedia/neural-qa" target="_blank" rel="noopener">NSpM</a>, tried to optimized certain existing modules and add another module, Paraphraser.<br>If you are interesting in the coding works of the whole project, here is the <a href="https://github.com/dbpedia/neural-qa/tree/gsoc-zheyuan" target="_blank" rel="noopener">Code Source</a>.<br>My own contributions to the project’s code base could be found in <a href>A Single Pull Request</a>.<br>Here is a quick conclusion of the three stages during last 4 months and if you are interesting in my works and want to know more about the details and my journey, please read my <a href="https://baiblanc.github.io/tags/gsoc-2020/page/2/">blog posts</a>.</p>
+<h2 id="Stage-Zero-—-4th-May-31st-May"><a href="#Stage-Zero-—-4th-May-31st-May" class="headerlink" title="Stage Zero — 4th May ~ 31st May"></a>Stage Zero — 4th May ~ 31st May</h2><p>GSOC-Bonding-Period: <a href="https://baiblanc.github.io/2020/06/01/GSOC-Bonding-period/">https://baiblanc.github.io/2020/06/01/GSOC-Bonding-period/</a><br>The first month of gsoc refers to a bonding period with the community DBpedia. I’ve principally working on the research of state-of-art’s solutions and models in the relevant field and tried to make my initial proposal more feasible and deliverable.</p>
+<h2 id="Stage-One-—-1st-June-3rd-July"><a href="#Stage-One-—-1st-June-3rd-July" class="headerlink" title="Stage One — 1st June ~ 3rd July"></a>Stage One — 1st June ~ 3rd July</h2><p>GSOC-Week-One: <a href="https://baiblanc.github.io/2020/06/07/GSOC-Week-One/">https://baiblanc.github.io/2020/06/07/GSOC-Week-One/</a><br>GSOC-Week-Two: <a href="https://baiblanc.github.io/2020/06/12/GSOC-Week-Two/">https://baiblanc.github.io/2020/06/12/GSOC-Week-Two/</a><br>GSOC-Week-Three: <a href="https://baiblanc.github.io/2020/06/23/GSOC-Week-Three/">https://baiblanc.github.io/2020/06/23/GSOC-Week-Three/</a><br>GSOC-Week-Four: <a href="https://baiblanc.github.io/2020/06/28/GSOC-Week-Four/">https://baiblanc.github.io/2020/06/28/GSOC-Week-Four/</a><br>These four weeks of works focused on testing different available resources, including the existing module in our projects and other available open-source models, and tried to build an initial pipeline with with Paraphraser and a relevant benchmark environment to test on the first results.</p>
+<h2 id="Stage-Two-—-4th-July-31st-July"><a href="#Stage-Two-—-4th-July-31st-July" class="headerlink" title="Stage Two — 4th July ~ 31st July"></a>Stage Two — 4th July ~ 31st July</h2><p>GSOC-Week-Five: <a href="https://baiblanc.github.io/2020/07/07/GSOC-Week-Five/">https://baiblanc.github.io/2020/07/07/GSOC-Week-Five/</a><br>GSOC-Week-Six: <a href="https://baiblanc.github.io/2020/07/13/GSOC-Week-Six/">https://baiblanc.github.io/2020/07/13/GSOC-Week-Six/</a><br>GSOC-Week-Seven: <a href="https://baiblanc.github.io/2020/07/17/GSOC-Week-Seven/">https://baiblanc.github.io/2020/07/17/GSOC-Week-Seven/</a><br>GSOC-Week-Eight: <a href="https://baiblanc.github.io/2020/07/28/GSOC-Week-Eight/">https://baiblanc.github.io/2020/07/28/GSOC-Week-Eight/</a><br>During the second month of coding period, I’ve worked on different aspects that optimized the existing modules of NSpM, like creation of initial templates, GloVe embeddings and proper vocabulary building, I’ve also worked on more details around the Paraphraser and solved problems found during the first stage of developments.</p>
+<h2 id="Stage-Three-—-1st-August-31st-August"><a href="#Stage-Three-—-1st-August-31st-August" class="headerlink" title="Stage Three — 1st August ~ 31st August"></a>Stage Three — 1st August ~ 31st August</h2><p>GSOC-Week-Nine: <a href="https://baiblanc.github.io/2020/08/02/GSOC-Week-Nine/">https://baiblanc.github.io/2020/08/02/GSOC-Week-Nine/</a><br>GSOC-Week-Ten: <a href="https://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/">https://baiblanc.github.io/2020/08/13/GSOC-Week-Ten/</a><br>GSOC-Week-Eleven: <a href="https://baiblanc.github.io/2020/08/18/GSOC-Week-Eleven/">https://baiblanc.github.io/2020/08/18/GSOC-Week-Eleven/</a><br>GSOC-Week-Twelve: <a href="https://baiblanc.github.io/2020/08/26/GSOC-Week-Twelve/">https://baiblanc.github.io/2020/08/26/GSOC-Week-Twelve/</a><br>I’ve worked on the final training and build a simple Grid-search of different meta-parameters of the new NSpM model which presents the final results and comparison with the baseline. A detailed presentation could be found on my Week-Eleven’s blog post. I’ve also worked on a One-command pipeline that tries to automate all the modules, from the creation of the templates to the training of the final NMT model.</p>
+<h1 id="Look-to-the-future"><a href="#Look-to-the-future" class="headerlink" title="Look to the future"></a>Look to the future</h1><p>The Paraphraser and the final pipeline only focused on the simple questions, with single Basic-Graph-Pattern (BGP), so in the future, it will also be interesting to tackle the problem of more complex questions, like compositional questions and questions that involves more complex expressions of SPARQL queries (SPARQL operators for example).<br>It would also be interesting to change the model Learner, as we are still using a LSTM-based model, which is no longer state-of-art model for a while. The Transformer or CNN-based models could be a good choice.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/27/GSOC-Final-Report/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Twelve" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1212,103 +1292,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/06/28/GSOC-Week-Four/">Read all >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GSOC-Week-Three" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/23/GSOC-Week-Three/">GSOC-Week-Three</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/23/GSOC-Week-Three/" class="archive-article-date">
-  	<time datetime="2020-06-23T15:37:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, in order to get the direct sense of whether we are in the good direction, I am going to set up the benchmark environment and a baseline with our original NSpM model.</p>
-<h1 id="Benchmark-environment"><a href="#Benchmark-environment" class="headerlink" title="Benchmark environment"></a>Benchmark environment</h1><p><img src="/2020/06/23/GSOC-Week-Three/benchmark_pipeline.png" alt><font size="2">Figure1: The whole benchmark pipeline</font><br>This figure could give you a first impression of our benchmark process. We have selected <a href="https://github.com/AKSW/irbench" target="_blank" rel="noopener">irbench</a> as our benchmark tool. Although Geribil may be more mature, but it is an online platform, and irbench is stabler as it could be set up locally.</p>
-<h2 id="Evaluation-Metrics"><a href="#Evaluation-Metrics" class="headerlink" title="Evaluation Metrics"></a>Evaluation Metrics</h2><p>We will principally evaluate our NSpM model with two metrics, f-score and BLEU score.</p>
-<h3 id="F-score"><a href="#F-score" class="headerlink" title="F-score"></a>F-score</h3><p>f-score aims to evaluate on the retrieved answers, this metric ignores the performance of the NMT model cares only about the final results.</p>
-<script type="math/tex; mode=display">f-score = 2*\frac{Precision*Recall}{Recall+Precision}</script><script type="math/tex; mode=display">Precision = \frac{TP}{TP+FP}</script><script type="math/tex; mode=display">Recall = \frac{TP}{TP+FN}</script><p>In our context, a FP is a wrong answer and a FN is a missed answer. For example:</p>
-<blockquote>
-<p>Query ‘list all scandinavian countries’ returns <code>:Denmark</code>, <code>:Norway</code>, <code>:France</code><br><code>:France</code> is a FP (wrong)<br><code>:Sweden</code>is a FN (missing)</p>
-</blockquote>
-<p>This f-score metric is integrated in the irbench.</p>
-<h3 id="BLEU-score"><a href="#BLEU-score" class="headerlink" title="BLEU score"></a>BLEU score</h3><p>A BLEU score could be accompanied with the f-score, it evaluates the quality of the translation. Imagine that two different questions could give the same answer, so we could never say if the model learns will with only the metric f-score.<br>Normally, the NMT model will automatically calculate this score while training, but it’s still possible if we wants to calculate the BLEU score on the test set. The only problem is that the SPARQL queries interpreted by oud Interpreter are equipped with the complete URIs while the gold queries given by test set of irbench are equipped with PREFIX and abbreviations:</p>
-<blockquote>
-<p>Gold query:  PREFIX dbo: \<a href="http://dbpedia.org/ontology/" target="_blank" rel="noopener">http://dbpedia.org/ontology/</a> PREFIX res: \<a href="http://dbpedia.org/resource/" target="_blank" rel="noopener">http://dbpedia.org/resource/</a> SELECT DISTINCT ?name WHERE { res:Queens_of_the_Stone_Age dbo:alias ?name }<br>System query: SELECT DISTINCT ?name WHERE { \<a href="http://dbpedia.org/resource/Queens_of_the_Stone_Age" target="_blank" rel="noopener">http://dbpedia.org/resource/Queens_of_the_Stone_Age</a> dbo:alias ?name }</p>
-</blockquote>
-<h2 id="irbench-tips"><a href="#irbench-tips" class="headerlink" title="irbench tips"></a>irbench tips</h2><p>If you also want to set up a benchmark environment with irbench, here are some tips to run the jar:<br>I recommend to run it with jdk8, if not, this will cause <em>java.lang.NoClassDefFoundError: javax/xml/bind/JAXBException</em> in higher version, this could still be resolved in JDK 9/10 by adding <code>--add-modules java.xml.bind</code> as an argument in run configuration, or this removed class could be only manually added in pom.xml.<br>As we have only a release version of jar file, this could only be run with jdk8/9/10. (I have run it with jdk14 and failed, and succeeded with jdk8, the solution for jdk9/10 is what I found from this <a href="https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j" target="_blank" rel="noopener">stackoverflow question</a>)</p>
-<p>To run the jar:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar &lt;released_jar_name&gt; -evaluate &lt;datasetID&gt; &lt;path of your results file&gt; <span class="string">"&lt;Metric ID&gt;"</span></span><br></pre></td></tr></table></figure><br>Make sure the json of your results file should be coherent with the test set json.<br>An example:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar irbench-v0.0.1-beta.2.jar -evaluate <span class="string">"qald-9-test-multilingual"</span> <span class="string">"&lt;yourpath&gt;/qald-9-NSpM-test.qald.json"</span> <span class="string">"f-score"</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="Pseudo-Baseline"><a href="#Pseudo-Baseline" class="headerlink" title="Pseudo Baseline"></a>Pseudo Baseline</h1><p>I call it a pseudo baseline because we haven’t discussed on the details in order to set up the baseline, and I’ve just made an naive experiment to test if my Benchmark environment works well.<br>Here are some details to be recorded:</p>
-<h3 id="Training-dataset"><a href="#Training-dataset" class="headerlink" title="Training dataset"></a>Training dataset</h3><p>I’ve directly used the dataset of Monument_300 which is proposed in the readme of <a href="https://github.com/dbpedia/neural-qa" target="_blank" rel="noopener">NSpM project</a>. It’s handy to use and not too big to train the model on my Mac.</p>
-<h3 id="Test-set"><a href="#Test-set" class="headerlink" title="Test set"></a>Test set</h3><p>I’ve used all the english question in <a href="https://github.com/AKSW/irbench/blob/master/orbit.benchmark/src/resource/java/org/aksw/orbit/benchmark/qald-9-train-multilingual.qald.json" target="_blank" rel="noopener">qald-train-multilingual.qald.json</a>.</p>
-<h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p>The BLEU score on our own dataset(validation set) is relatively high, 86.9/100.<br>But the result of f-score on test set is terrible, 0 f-score on average, but this is normal because our training set is really restricted to the domain of Monument but the test set questions are more opened(I used the word ‘opened’ but to be noted, there are still in restricted domain but not open-domain questions ).<br>One problem is that I found some queries are not grammarly correct, which means the could only retrieve a <strong>Bad Request 400</strong> from the SPARQL endpoint.<br>Another point to be noted is that the prefix are not correctly used as below:</p>
-<blockquote>
-<p>SELECT DISTINCT ?name WHERE { \<a href="http://dbpedia.org/resource/Queens_of_the_Stone_Age" target="_blank" rel="noopener">http://dbpedia.org/resource/Queens_of_the_Stone_Age</a> dbo:alias ?name }</p>
-</blockquote>
-<p>We could see that the <strong>resource</strong> is represented by the complete URI but the <strong>Ontology</strong> is represented by its abbreviation, and this is not a unique case. This could be caused by the rules for generating the templates in Generator.</p>
-<h3 id="Some-thoughts"><a href="#Some-thoughts" class="headerlink" title="Some thoughts"></a>Some thoughts</h3><p>We could see that only one domain data-set could not train a satisfactory QA model to response to relatively open questions, so it becomes problematic to select domains so in order to generate a relatively complete data-set which can handle questions most domains.</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/23/GSOC-Week-Three/">Read all >></a>
         </p>
       
 
