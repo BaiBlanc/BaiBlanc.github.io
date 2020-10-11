@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Archives: 2020/8 | Zheyuan BAI&#39;s Blog</title>
+  <title>Implementation of Paraphraser to Yago | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:url" content="http://baiblanc.github.io/archives/2020/08/index.html">
+  <meta name="description" content="IntroductionIn order to study the effect of generalization of Paraphraser, to make clear if it could help not only DBpedia increase the performance of a Question Answering system, I’ve decided to impl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Implementation of Paraphraser to Yago">
+<meta property="og:url" content="http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
+<meta property="og:description" content="IntroductionIn order to study the effect of generalization of Paraphraser, to make clear if it could help not only DBpedia increase the performance of a Question Answering system, I’ve decided to impl">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/non_40k_acc.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/non_40k_bleu.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/paraphrased_40k_acc.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/paraphrased_40k_bleu.png">
+<meta property="article:published_time" content="2020-10-10T11:39:07.000Z">
+<meta property="article:modified_time" content="2020-10-11T02:48:00.454Z">
 <meta property="article:author" content="Zheyuan BAI">
+<meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/non_40k_acc.png">
   
     <link rel="alternative" href="/atom.xml" title="Zheyuan BAI&#39;s Blog" type="application/atom+xml">
   
@@ -146,36 +156,46 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Implementation-of-Paraphraser-to-Yago" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Implementation of Paraphraser to Yago
+    </h1>
+  
+
+        
+        <a href="/2020/10/10/Implementation-of-Paraphraser-to-Yago/" class="archive-article-date">
+  	<time datetime="2020-10-10T11:39:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>In order to study the effect of generalization of Paraphraser, to make clear if it could help not only DBpedia increase the performance of a Question Answering system, I’ve decided to implement it to other knowledge bases.<br>Among all the choices: freebase, wikidata, yage, I’ve picked up Yago because of its similarity with DBpedia: uses an Endpoint of Sparql, maintain a clear <a href="https://yago-knowledge.org/schema" target="_blank" rel="noopener">schema</a>, the range of most of properties are available, etc.</p>
+<h1 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h1><p>Although Yago is similar with DBpedia in many ways mentioned above, I still need to modify many details of the code, in particularly on the step of creating the original templates and the step of Generator.<br>As the labels of properties are not accessible on the page of each class, the predicates could only be integrated into the original templates in a Bump Nomenclature way:</p>
+<blockquote>
+<p>Normal way: What is the active years end year of “A” ?<br>Bump Nomenclature way: What is the activeYearsEndYear of “A” ?</p>
+</blockquote>
+<h1 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h1><p>The two tests and training are all realised with a Bi-LSTM, 512-unit model, and 40k training steps.</p>
+<h3 id="Model-I-Non-Paraphrased-Dataset"><a href="#Model-I-Non-Paraphrased-Dataset" class="headerlink" title="Model I:Non Paraphrased Dataset"></a>Model I:Non Paraphrased Dataset</h3><p><img src="/2020/10/10/Implementation-of-Paraphraser-to-Yago/non_40k_acc.png" alt><br><em>Figure 1 Accuracy</em></p>
+<p><img src="/2020/10/10/Implementation-of-Paraphraser-to-Yago/non_40k_bleu.png" alt><br><em>Figure 2 BLEU Score</em></p>
+<p>The final accuracy on test set reaches 0.11653.</p>
+<h3 id="Model-II-Paraphrased-Dataset"><a href="#Model-II-Paraphrased-Dataset" class="headerlink" title="Model II: Paraphrased Dataset"></a>Model II: Paraphrased Dataset</h3><p><img src="/2020/10/10/Implementation-of-Paraphraser-to-Yago/paraphrased_40k_acc.png" alt><br><em>Figure 3 Accuracy</em><br><img src="/2020/10/10/Implementation-of-Paraphraser-to-Yago/paraphrased_40k_bleu.png" alt><br><em>Figure 4 BLEU Score</em></p>
+<p>The final accuracy on the same test set with Non paraphrased Data set (not the representation of Figure 3), reaches 0.72338, which is really surprising.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We could see a leap forward of accuracy from the non paraphrased on to the paraphrased one (from 0.12 to 0.72). This may be caused by the Bump Nomenclature of predicates, which increases the difficulty to the non paraphrased one to be learnt, while the paraphrased data set somehow deconstruct the Bump Nomenclature names and make it much easier to be learnt.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/28/GSOC-Final-Report/" class="archive-article-date">
-  	<time datetime="2020-08-27T20:28:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/28/GSOC-Final-Report/">GSOC-Final-Report</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -187,171 +207,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/10/10/Implementation-of-Paraphraser-to-Yago/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/27/GSOC-Week-Twelve/" class="archive-article-date">
-  	<time datetime="2020-08-26T16:39:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-27</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/08/28/GSOC-Final-Report/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GSOC-Final-Report</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/27/GSOC-Week-Twelve/">GSOC-Week-Twelve</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/19/GSOC-Week-Eleven/" class="archive-article-date">
-  	<time datetime="2020-08-18T19:38:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/19/GSOC-Week-Eleven/">GSOC-Week-Eleven</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/14/GSOC-Week-Ten/" class="archive-article-date">
-  	<time datetime="2020-08-13T19:03:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/14/GSOC-Week-Ten/">GSOC-Week-Ten</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/03/GSOC-Week-Nine/" class="archive-article-date">
-  	<time datetime="2020-08-02T18:04:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/03/GSOC-Week-Nine/">GSOC-Week-Nine</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -374,8 +329,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

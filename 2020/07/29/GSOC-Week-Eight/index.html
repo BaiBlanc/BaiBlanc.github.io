@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Archives: 2020/8 | Zheyuan BAI&#39;s Blog</title>
+  <title>GSOC-Week-Eight | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:url" content="http://baiblanc.github.io/archives/2020/08/index.html">
+  <meta name="description" content="IntroductionThis week, the code of Paraphraser has been optimised by Tommaso and the process becomes much faster. So instead of working on Sentence-BERT, I’ve accomplished many small tasks Basic Templ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSOC-Week-Eight">
+<meta property="og:url" content="http://baiblanc.github.io/2020/07/29/GSOC-Week-Eight/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
+<meta property="og:description" content="IntroductionThis week, the code of Paraphraser has been optimised by Tommaso and the process becomes much faster. So instead of working on Sentence-BERT, I’ve accomplished many small tasks Basic Templ">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://baiblanc.github.io/2020/07/28/GSOC-Week-Eight/100k.png">
+<meta property="article:published_time" content="2020-07-28T18:30:52.000Z">
+<meta property="article:modified_time" content="2020-07-30T14:16:20.352Z">
 <meta property="article:author" content="Zheyuan BAI">
+<meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baiblanc.github.io/2020/07/28/GSOC-Week-Eight/100k.png">
   
     <link rel="alternative" href="/atom.xml" title="Zheyuan BAI&#39;s Blog" type="application/atom+xml">
   
@@ -146,36 +153,226 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-GSOC-Week-Eight" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GSOC-Week-Eight
+    </h1>
+  
+
+        
+        <a href="/2020/07/29/GSOC-Week-Eight/" class="archive-article-date">
+  	<time datetime="2020-07-28T18:30:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-29</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, the code of Paraphraser has been optimised by Tommaso and the process becomes much faster. So instead of working on Sentence-BERT, I’ve accomplished many small tasks</p>
+<h1 id="Basic-Templates"><a href="#Basic-Templates" class="headerlink" title="Basic Templates"></a>Basic Templates</h1><p>We thought that some question-templates whose queries involve SPARQL operators are not properly created, so we decided to firstly not include those operators and only generate basic templates.</p>
+<h3 id="Basic-question-form"><a href="#Basic-question-form" class="headerlink" title="Basic question form"></a>Basic question form</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Beginning pf Question</td>
+<td style="text-align:center">When is the</td>
+<td style="text-align:center">Who is the</td>
+<td style="text-align:center">What is the</td>
+<td style="text-align:center">Where is the</td>
+</tr>
+<tr>
+<td style="text-align:center">Beginning of Query</td>
+<td style="text-align:center">select ?x</td>
+<td style="text-align:center">select ?x</td>
+<td style="text-align:center">select ?x</td>
+<td style="text-align:center">select ?x</td>
+</tr>
+<tr>
+<td style="text-align:center">Ending of Query</td>
+<td style="text-align:center">}</td>
+<td style="text-align:center">}</td>
+<td style="text-align:center">}</td>
+<td style="text-align:center">}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="SPARQL-Operator-COUNT"><a href="#SPARQL-Operator-COUNT" class="headerlink" title="SPARQL Operator COUNT"></a>SPARQL Operator COUNT</h3><p>COUNT in simple questions</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.how many airlines are there?</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:Airline }</td>
+</tr>
+<tr>
+<td style="text-align:center">2.how many destinations does “Airline” have?</td>
+<td style="text-align:center">select (COUNT(*)) as ?c { “Airline” dbo:destination ?x }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Non-question sentence</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">list all airlines based in germany</td>
+<td style="text-align:center">select ?x { ?x a dbo:Airline ; dbo:headquarter dbr:Germany }</td>
+</tr>
+<tr>
+<td style="text-align:center">List all airlines whose destination is China.</td>
+<td style="text-align:center">select ?x { ?x a dbo:Airline ; dbo:destination dbr:China }  OR  select ?x { ?x dbo:destination dbr:China }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>COUNT in Compositional question</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">how many airlines are based in germany?</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:Airline ; dbo:headquarter dbr:Germany }</td>
+</tr>
+<tr>
+<td style="text-align:center">how many airlines whose destination is China</td>
+<td style="text-align:center">select (count(*) as ?c) { ?x a dbo:Airline ; dbo:destination dbr:China }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Other-SPARQL-Operator"><a href="#Other-SPARQL-Operator" class="headerlink" title="Other SPARQL Operator"></a>Other SPARQL Operator</h3><p>1.Highest rank — ORDER BY</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+<th style="text-align:center">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.which place has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank 1 }</td>
+<td style="text-align:center">A list of 73 URIs</td>
+</tr>
+<tr>
+<td style="text-align:center">1.which place of India has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank 1 ; dbo:country dbr:India }</td>
+<td style="text-align:center">A list of 31 URIs (weird!)</td>
+</tr>
+<tr>
+<td style="text-align:center">2.which place has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank ?rank } ORDER BY ASC(?rank) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Phnom_Penh" target="_blank" rel="noopener">http://dbpedia.org/resource/Phnom_Penh</a> (?rank = dbr:Administrative_divisions_of_Camoodia; not a xsd:Integer)</td>
+</tr>
+<tr>
+<td style="text-align:center">2.which place of India has the highest areaRank?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:areaRank ?rank ; dbo:country dbr:India } ORDER BY ASC(?rank) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Tavanur" target="_blank" rel="noopener">http://dbpedia.org/resource/Tavanur</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>2.Greatest amount — ORDER BY</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+<th style="text-align:center">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.which place has the greatest amount of populationTotal?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:populationTotal ?population } Order by DESC(?population) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Giza_Governorate" target="_blank" rel="noopener">http://dbpedia.org/resource/Giza_Governorate</a></td>
+</tr>
+<tr>
+<td style="text-align:center">1.which place of Portugal has the greatest amount of populationTotal ?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbp:populationTotal ?population ; dbo:country dbr:Portugal } Order by DESC(?population) LIMIT 1</td>
+<td style="text-align:center"><a href="http://dbpedia.org/resource/Algueirão–Mem_Martins" target="_blank" rel="noopener">http://dbpedia.org/resource/Algueirão–Mem_Martins</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>3.Comparative — FILTER </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">NL sentence</th>
+<th style="text-align:center">SPARQL query</th>
+<th style="text-align:center">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1.which people/ who/ list all people who have the height which is more than 2 metres?</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri dbo:height ?n FILTER ( ?n &gt; 2.0 ) }</td>
+<td style="text-align:center">A list of 16245 URIs</td>
+</tr>
+<tr>
+<td style="text-align:center">1.list all basketball players that are higher than 2 meters.</td>
+<td style="text-align:center">SELECT ?uri WHERE { ?uri a dbo:BasketballPlayer ; dbo:height ?n FILTER ( ?n &gt; 2.0 ) }</td>
+<td style="text-align:center">A list of 4629 URIs</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We could see that the COUNT operator is relatively simple, because it involves only one single variable. And based on the non-question sentence “List …”, the SPARQL query is also simple to be transferred, just change <code>select ?x</code> to <code>select (count(*) as ?c)</code>.<br>So far, we have constructed two structures of natural language questions properly, one counts the entity itself and another counts an attribute of the entity.<br>For other operators like ORDER BY and FILTER, we should firstly search the orderable attributes, like numeric literals(xsd:integers and xsd:double).</p>
+<h1 id="Remote-Server"><a href="#Remote-Server" class="headerlink" title="Remote Server"></a>Remote Server</h1><p>This week, I’ve also got the support of computation from our community. Although it’s just a CPU server, it has 96 GB of RAM and at least, it could train or fine-tune the GloVe model as the co-occurrence matrix would consume a lot of memory. In plus, the download speed is not so fast (~50kb/s).</p>
+<h1 id="Issue-of-vocabulary-building"><a href="#Issue-of-vocabulary-building" class="headerlink" title="Issue of vocabulary building"></a>Issue of vocabulary building</h1><p>Again, I’ve encountered the issue of inconsistency between the vocabulary and embeddings.<br>Examples of inconsistency between <code>vocab</code> and <code>embed</code>:</p>
+<blockquote>
+<p><code>build_vocab.py</code>       “RKDartists” -&gt; “RK” and “Dartists”<br>                      “EntrezGene” -&gt; “Entrez” and “Gene”</p>
+<p><code>Glove_finetune.py</code>    “RKDartists” -&gt; “rkdartists”<br>                      “EntrezGene” -&gt; “entrezgene”</p>
+</blockquote>
+<p>The file <code>vocab.en</code> is generated by <code>build_vocab.py</code> using learn.preprocessing.VocabularyProcessor of TensorFlow.contrib, whereas Embeddings are trained with GloVe with simple tokenization and normalisation. As the file <code>build_vocab.py</code> is part of NSpM, I didn’t change it last time and just remove those which don’t appear in the embeddings from <code>vocab.en</code>, but this time, it seems to affect the training, the BLEU score only reaches 55 around 40000 steps(until wrote this line). So I decided to use my own vocab instead of <code>build_vocab.py</code> and we would see if that could help with the BLEU score.<br><img src="/2020/07/28/GSOC-Week-Eight/100k.png" alt><br>Figure BLEU score till 100k training steps<br>The precision of the translation is 0.895 (25355/28316), using <code>diff -U 0 test.sparql output_test | grep ^@ | wc -l</code>. The precision here means that 25355 queries are correctly translated among 28316 queries in test set.<br>We could see that BLEU score is much lower than last time but precision remains acceptable. The low BLEU score could be due to the inconsistency, and I’m training another consistent model so that we would see the difference.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>This week I’ve finished many small tasks. I was going to try to fine-tune a Sentence-BERT model with the sentence representation and similarity problems, but as we have a much faster USE model and we are going to annotate our own corpus, I just stopped to handle other small issues mentioned above.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/28/GSOC-Final-Report/" class="archive-article-date">
-  	<time datetime="2020-08-27T20:28:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/28/GSOC-Final-Report/">GSOC-Final-Report</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -187,171 +384,115 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/07/29/GSOC-Week-Eight/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/27/GSOC-Week-Twelve/" class="archive-article-date">
-  	<time datetime="2020-08-26T16:39:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-27</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/08/03/GSOC-Week-Nine/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          GSOC-Week-Nine
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/18/GSOC-Week-Seven/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GSOC-Week-Seven</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/27/GSOC-Week-Twelve/">GSOC-Week-Twelve</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/19/GSOC-Week-Eleven/" class="archive-article-date">
-  	<time datetime="2020-08-18T19:38:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/19/GSOC-Week-Eleven/">GSOC-Week-Eleven</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/14/GSOC-Week-Ten/" class="archive-article-date">
-  	<time datetime="2020-08-13T19:03:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/14/GSOC-Week-Ten/">GSOC-Week-Ten</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/03/GSOC-Week-Nine/" class="archive-article-date">
-  	<time datetime="2020-08-02T18:04:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/03/GSOC-Week-Nine/">GSOC-Week-Nine</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -374,8 +515,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

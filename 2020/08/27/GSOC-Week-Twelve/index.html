@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Archives: 2020/8 | Zheyuan BAI&#39;s Blog</title>
+  <title>GSOC-Week-Twelve | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:url" content="http://baiblanc.github.io/archives/2020/08/index.html">
+  <meta name="description" content="IntroductionThis week, I’ve firstly trained another model with only the original questions using the 300d Glove embeddings. Then I principally worked on the “One-command pipeline”. 300-dimension GloVe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSOC-Week-Twelve">
+<meta property="og:url" content="http://baiblanc.github.io/2020/08/27/GSOC-Week-Twelve/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
+<meta property="og:description" content="IntroductionThis week, I’ve firstly trained another model with only the original questions using the 300d Glove embeddings. Then I principally worked on the “One-command pipeline”. 300-dimension GloVe">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://baiblanc.github.io/2020/08/26/GSOC-Week-Twelve/bleu.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/08/26/GSOC-Week-Twelve/bleu.png">
+<meta property="article:published_time" content="2020-08-26T16:39:04.000Z">
+<meta property="article:modified_time" content="2020-08-26T19:26:48.540Z">
 <meta property="article:author" content="Zheyuan BAI">
+<meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baiblanc.github.io/2020/08/26/GSOC-Week-Twelve/bleu.png">
   
     <link rel="alternative" href="/atom.xml" title="Zheyuan BAI&#39;s Blog" type="application/atom+xml">
   
@@ -146,74 +154,57 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-GSOC-Week-Twelve" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/28/GSOC-Final-Report/" class="archive-article-date">
-  	<time datetime="2020-08-27T20:28:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/28/GSOC-Final-Report/">GSOC-Final-Report</a>
+    <h1 class="article-title" itemprop="name">
+      GSOC-Week-Twelve
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/27/GSOC-Week-Twelve/" class="archive-article-date">
+        
+        <a href="/2020/08/27/GSOC-Week-Twelve/" class="archive-article-date">
   	<time datetime="2020-08-26T16:39:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-27</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/27/GSOC-Week-Twelve/">GSOC-Week-Twelve</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This week, I’ve firstly trained another model with only the original questions using the 300d Glove embeddings. Then I principally worked on the “One-command pipeline”.</p>
+<h1 id="300-dimension-GloVe-without-Paraphraser"><a href="#300-dimension-GloVe-without-Paraphraser" class="headerlink" title="300-dimension GloVe without Paraphraser"></a>300-dimension GloVe without Paraphraser</h1><p><img src="/2020/08/26/GSOC-Week-Twelve/bleu.png" alt><br>Bleu score 71.89<br><img src="/2020/08/26/GSOC-Week-Twelve/bleu.png" alt><br>Accuracy 0.385</p>
+<p>Compared to the accuracy of 50-d GloVe model, which reached <strong>0.365</strong>, we could see that a larger dimension of embeddings could help with the performance(0.365 -&gt; 0.385), but not as much as the Paraphraser(0.365 -&gt; 0.483).</p>
+<h1 id="The-complete-pipeline"><a href="#The-complete-pipeline" class="headerlink" title="The complete pipeline"></a>The complete pipeline</h1><p>The complete pipeline could be divided into 4 principal steps and several detailed steps as below:</p>
+<blockquote>
+<p>1.Templator: Generation of templates<br>2.Paraphraser: Batch-Paraphrasing</p>
+<blockquote>
+<p>2.1 Download BERT-Classifier<br>2.2 Launch Paraphraser</p>
+</blockquote>
+<p>3.Generator: Generation of corpus and data sets</p>
+<blockquote>
+<p>3.1 Generate data.en/sparql<br>3.2 Generate vocab (simple tokenizing and normalization)<br>3.3 Generate Glove embeddings</p>
+<blockquote>
+<p>3.3.1 Download GloVe 300d pretrained model<br>3.3.2 Fine-tune en and Train sparql</p>
+</blockquote>
+</blockquote>
+<p>4.Learner: NMT training</p>
+<blockquote>
+<p>4.1 Split into train/dev/test<br>4.2 Training with embedding</p>
+</blockquote>
+</blockquote>
+<p>The code has already been tested separately locally on my Macbook, but I noticed that some Shell’s commands are slightly different between GNU/Linux and Mac OS, like the different option of command <code>sed</code>. In case that there may be other differences or issues happened on a Linux server, I would also try running the <code>pipeline shell</code> in a linux environment.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>The work has nearly reached an end, the next step will be running the complete pipeline on the whole ontology classes of DBpedia.</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -225,133 +216,115 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/08/27/GSOC-Week-Twelve/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/19/GSOC-Week-Eleven/" class="archive-article-date">
-  	<time datetime="2020-08-18T19:38:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-19</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/08/28/GSOC-Final-Report/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          GSOC-Final-Report
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/19/GSOC-Week-Eleven/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">GSOC-Week-Eleven</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/19/GSOC-Week-Eleven/">GSOC-Week-Eleven</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/14/GSOC-Week-Ten/" class="archive-article-date">
-  	<time datetime="2020-08-13T19:03:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/14/GSOC-Week-Ten/">GSOC-Week-Ten</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/08/03/GSOC-Week-Nine/" class="archive-article-date">
-  	<time datetime="2020-08-02T18:04:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/08/03/GSOC-Week-Nine/">GSOC-Week-Nine</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -374,8 +347,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
