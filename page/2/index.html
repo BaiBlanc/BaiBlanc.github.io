@@ -148,6 +148,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GSOC-Week-Five" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/08/GSOC-Week-Five/">GSOC-Week-Five</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/08/GSOC-Week-Five/" class="archive-article-date">
+  	<time datetime="2020-07-07T18:45:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Last week, we discussed about the failed attempts to set up the baseline with multiple ontology terms. As we still considered it necessary to cover as many utterances of NL question as possible, trying to handle well all of the other issues before really start a time-consuming training is a good idea.<br>Embeddings of words is the option that we decided to deal with this week.</p>
+<h1 id="Embedding-of-Input-and-Output"><a href="#Embedding-of-Input-and-Output" class="headerlink" title="Embedding of Input and Output"></a>Embedding of Input and Output</h1><p>As the NMT model support pre-trained word embeddings, but only if we use them on both sides, i.e. we need embedding both natural language and Sparql query. </p>
+<h3 id="GloVe-embedding"><a href="#GloVe-embedding" class="headerlink" title="GloVe embedding"></a>GloVe embedding</h3><p>The GloVe proposes its <a href="https://nlp.stanford.edu/projects/glove/" target="_blank" rel="noopener">pre-trained embedding</a> so that we could simply use them as the input of the NMT model.<br>Unlike other pre-trained embedding models using language model, GloVe uses the Co-occurrence matrix:</p>
+<script type="math/tex; mode=display">log(X_{ij}) = w^T_i * w_j + b_i + b_j</script><p><script type="math/tex">X</script>: The co-occurrence matrix</p>
+<p><script type="math/tex">X_{ij}</script>: In the whole corpus, the number of times that the word i and the word j appear together in a window</p>
+<p><script type="math/tex">w_i , w_j</script>: The two word vectors</p>
+<p><script type="math/tex">b_i , b_j</script>: The bias</p>
+<h3 id="Fine-tune-GloVe-model"><a href="#Fine-tune-GloVe-model" class="headerlink" title="Fine-tune GloVe model"></a>Fine-tune GloVe model</h3><p>In our case, we may have a data-set whose vocabulary has a large number of words that are not present in pre-trained model, this may cause a serious OOV issue. Fortunately, the GloVe model could be fine-tuned, this is also why we don’t choose Word2Vec embedding. Here, I followed the <a href="https://towardsdatascience.com/fine-tune-glove-embeddings-using-mittens-89b5f3fe4c39" target="_blank" rel="noopener">article</a> to fine-tune the GloVe embeddings.<br>Once fine-tuned, the new embeddings are compatible with the existing embeddings it makes sense to use a mixture of the two embeddings.</p>
+<h3 id="Improvement-of-model-training"><a href="#Improvement-of-model-training" class="headerlink" title="Improvement of model training"></a>Improvement of model training</h3><p>After some adjustments, I have succeeded to run the NMT model with our trained GLoVe embeddings. Here is the figure that shows the two curves of BLEU score along the training steps:<br><img src="/2020/07/07/GSOC-Week-Five/comparaison.png" alt><br>The blue curve shows the progress of the model without pre-trained embeddings, the red one shows our model with word embeddings.<br>It’s a little bit surprised to see that the embeddings does not accelerate the training of NMT, it falls behind in the first 17500 steps, but it shows the possibility to improve along with the train steps.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>We are using fixed word-embeddings because the NMT model does not support contextualized embeddings like BERT, ELMo, but I think it will be a good choice in the future if we change our base of Translation Model.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/08/GSOC-Week-Five/">Read all >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GSOC-Week-Four" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
