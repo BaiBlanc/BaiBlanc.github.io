@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
   <title>Thinking-of-the-Paraphraser | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Brief reviewOver linked datarelatively open-domainresolving ambiguities of human utterances Other ApproachesBecause a lack of logical forms in the training data, weakly supervise the training. Which t">
+  <meta name="description" content="Brief reviewOver linked datarelatively open-domainresolving ambiguities of human utterances Why the Paraphraser could increase the performanceWe’ve seen the improvements of performance on a DBpedia ba">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Thinking-of-the-Paraphraser">
 <meta property="og:url" content="http://baiblanc.github.io/2020/10/11/Thinking-of-the-Paraphraser/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:description" content="Brief reviewOver linked datarelatively open-domainresolving ambiguities of human utterances Other ApproachesBecause a lack of logical forms in the training data, weakly supervise the training. Which t">
+<meta property="og:description" content="Brief reviewOver linked datarelatively open-domainresolving ambiguities of human utterances Why the Paraphraser could increase the performanceWe’ve seen the improvements of performance on a DBpedia ba">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-11T10:00:35.772Z">
-<meta property="article:modified_time" content="2020-10-12T04:05:59.941Z">
+<meta property="article:modified_time" content="2020-10-14T09:43:29.155Z">
 <meta property="article:author" content="Zheyuan BAI">
 <meta name="twitter:card" content="summary">
   
@@ -171,8 +171,24 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Brief-review"><a href="#Brief-review" class="headerlink" title="Brief review"></a>Brief review</h1><p>Over linked data<br>relatively open-domain<br>resolving ambiguities of human utterances</p>
+<h1 id="Why-the-Paraphraser-could-increase-the-performance"><a href="#Why-the-Paraphraser-could-increase-the-performance" class="headerlink" title="Why the Paraphraser could increase the performance"></a>Why the Paraphraser could increase the performance</h1><p>We’ve seen the improvements of performance on a DBpedia based data set and a Yado based data set thanks to Paraphraser. But why it could improve the accuracy with the same trainings steps and the same model (Bi-LSTM) comparing with a data set without Paraphraser?<br>Hypothese 1. It increases the amount of templates for each relation and entity (Tripling the template size), so each entity and relation have more examples to be learnt.<br>Experiment 1. Copy the templates 2 times in plus, so the size of templates equals to the ones with Paraphraser.</p>
 <h1 id="Other-Approaches"><a href="#Other-Approaches" class="headerlink" title="Other Approaches"></a>Other Approaches</h1><p>Because a lack of logical forms in the training data, weakly supervise the training.</p>
-<h1 id="Which-types-of-errors-are-there-and-how-can-we-solve-them"><a href="#Which-types-of-errors-are-there-and-how-can-we-solve-them" class="headerlink" title="Which types of errors are there and how can we solve them?"></a>Which types of errors are there and how can we solve them?</h1><h3 id="Non-paraphrased-—DBpedia"><a href="#Non-paraphrased-—DBpedia" class="headerlink" title="Non paraphrased —DBpedia"></a>Non paraphrased —DBpedia</h3><h3 id="Ambiguity"><a href="#Ambiguity" class="headerlink" title="Ambiguity?"></a>Ambiguity?</h3><p> A user question can describe an<br>entity, using one of its labels (e.g. Apple), while the underlying source(s) may use<br>a different one (e.g. Macintosh), resulting to mismatches.<br>Apart from synonyms, we have the problem of homonyms, i.e. there are different<br>entities that share the same name (e.g. Washington may refer either to the capital state or to the first President of the U.S.A.).</p>
+<h1 id="Which-types-of-errors-are-there-and-how-can-we-solve-them"><a href="#Which-types-of-errors-are-there-and-how-can-we-solve-them" class="headerlink" title="Which types of errors are there and how can we solve them?"></a>Which types of errors are there and how can we solve them?</h1><p>36 simple questions in qald-9-test data set:</p>
+<blockquote>
+<p>Non paraphrased: 27 mis-matches of relation<br>Paraphrased: 25 mis-matches of relation</p>
+</blockquote>
+<p>We could see the 2 less mis-matches thanks to the Paraphraser for simple questions as below:</p>
+<blockquote>
+<p>what is angela merkel’s birth name ?<br>select var_x where brack_open dbr_Adunis dbo_birthPlace var_x brack_close<br>select var_x where brack_open dbr_Angela_Lansbury dbo_birthName var_x brack_close</p>
+<p>who is the husband of amanda palmer ?<br>select var_x where brack_open dbr_Justin_Timberlake dbo_partner var_x brack_close<br>select var_x where brack_open dbr_Amanda_Holden dbo_spouse var_x brack_close</p>
+</blockquote>
+<p>There are more examples that the Paraphraser helps with the match of relation/predicate.</p>
+<blockquote>
+<p>how many years was the ford model t manufactured ?<br>select var_x where brack_open dbr_Speedland:_The_Premium_Best_Re_Tracks dbo_activeYears var_x brack_close<br>select var_x where brack_open dbr_Ford_LCF dbo_productionStartYear var_x brack_close</p>
+<p>which poet wrote the most books ?<br>select var_x where brack_open dbr_Way_of_the_Samurai_2 dbo_composer var_x brack_close<br>select var_x where brack_open dbr_Notes_(application) dbo_author var_x brack_close</p>
+</blockquote>
+<p>We could see that a paraphraser do</p>
+<h3 id="Paraphrased-—DBpedia"><a href="#Paraphrased-—DBpedia" class="headerlink" title="Paraphrased —DBpedia"></a>Paraphrased —DBpedia</h3><h3 id="Ambiguity"><a href="#Ambiguity" class="headerlink" title="Ambiguity?"></a>Ambiguity?</h3><p> A user question can describe an<br>entity, using one of its labels (e.g. Apple), while the underlying source(s) may use<br>a different one (e.g. Macintosh), resulting to mismatches.<br>Apart from synonyms, we have the problem of homonyms, i.e. there are different<br>entities that share the same name (e.g. Washington may refer either to the capital state or to the first President of the U.S.A.).</p>
 <h3 id="Type-of-questions"><a href="#Type-of-questions" class="headerlink" title="Type of questions"></a>Type of questions</h3><p>Only factoid questions (What\\When\\Where)</p>
 <h3 id="Domain"><a href="#Domain" class="headerlink" title="Domain"></a>Domain</h3><p>respectively Open-domain. Not focused on a single domain.</p>
 
