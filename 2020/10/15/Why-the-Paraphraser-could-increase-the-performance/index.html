@@ -6,19 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://BaiBlanc.github.io">
-  <title>Thinking-of-the-Paraphraser | Zheyuan BAI&#39;s Blog</title>
+  <title>Why the Paraphraser could increase the performance? | Zheyuan BAI&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Brief reviewOver linked datarelatively open-domainresolving ambiguities of human utterances Why the Paraphraser could increase the performanceWe’ve seen the improvements of performance on a DBpedia ba">
+  <meta name="description" content="Why the Paraphraser could increase the performanceWe’ve seen the improvements of performance on a DBpedia based data set and a Yado based data set thanks to Paraphraser. But why it could improve the a">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Thinking-of-the-Paraphraser">
-<meta property="og:url" content="http://baiblanc.github.io/2020/10/11/Thinking-of-the-Paraphraser/index.html">
+<meta property="og:title" content="Why the Paraphraser could increase the performance?">
+<meta property="og:url" content="http://baiblanc.github.io/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/index.html">
 <meta property="og:site_name" content="Zheyuan BAI&#39;s Blog">
-<meta property="og:description" content="Brief reviewOver linked datarelatively open-domainresolving ambiguities of human utterances Why the Paraphraser could increase the performanceWe’ve seen the improvements of performance on a DBpedia ba">
+<meta property="og:description" content="Why the Paraphraser could increase the performanceWe’ve seen the improvements of performance on a DBpedia based data set and a Yado based data set thanks to Paraphraser. But why it could improve the a">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-11T10:00:35.772Z">
-<meta property="article:modified_time" content="2020-10-14T09:43:29.155Z">
+<meta property="og:image" content="http://baiblanc.github.io/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/tripled_acc.png">
+<meta property="og:image" content="http://baiblanc.github.io/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/paraphrased_acc.png">
+<meta property="article:published_time" content="2020-10-15T08:46:24.000Z">
+<meta property="article:modified_time" content="2020-10-22T08:48:26.614Z">
 <meta property="article:author" content="Zheyuan BAI">
+<meta property="article:tag" content="gsoc-2020">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://baiblanc.github.io/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/tripled_acc.png">
   
     <link rel="alternative" href="/atom.xml" title="Zheyuan BAI&#39;s Blog" type="application/atom+xml">
   
@@ -150,47 +154,56 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Thinking-of-the-Paraphraser" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Why-the-Paraphraser-could-increase-the-performance" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Thinking-of-the-Paraphraser
+      Why the Paraphraser could increase the performance?
     </h1>
   
 
         
-        <a href="/2020/10/11/Thinking-of-the-Paraphraser/" class="archive-article-date">
-  	<time datetime="2020-10-11T10:00:35.772Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-11</time>
+        <a href="/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/" class="archive-article-date">
+  	<time datetime="2020-10-15T08:46:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-15</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Brief-review"><a href="#Brief-review" class="headerlink" title="Brief review"></a>Brief review</h1><p>Over linked data<br>relatively open-domain<br>resolving ambiguities of human utterances</p>
-<h1 id="Why-the-Paraphraser-could-increase-the-performance"><a href="#Why-the-Paraphraser-could-increase-the-performance" class="headerlink" title="Why the Paraphraser could increase the performance"></a>Why the Paraphraser could increase the performance</h1><p>We’ve seen the improvements of performance on a DBpedia based data set and a Yado based data set thanks to Paraphraser. But why it could improve the accuracy with the same trainings steps and the same model (Bi-LSTM) comparing with a data set without Paraphraser?<br>Hypothese 1. It increases the amount of templates for each relation and entity (Tripling the template size), so each entity and relation have more examples to be learnt.<br>Experiment 1. Copy the templates 2 times in plus, so the size of templates equals to the ones with Paraphraser.</p>
-<h1 id="Other-Approaches"><a href="#Other-Approaches" class="headerlink" title="Other Approaches"></a>Other Approaches</h1><p>Because a lack of logical forms in the training data, weakly supervise the training.</p>
-<h1 id="Which-types-of-errors-are-there-and-how-can-we-solve-them"><a href="#Which-types-of-errors-are-there-and-how-can-we-solve-them" class="headerlink" title="Which types of errors are there and how can we solve them?"></a>Which types of errors are there and how can we solve them?</h1><p>36 simple questions in qald-9-test data set:</p>
+        <h1 id="Why-the-Paraphraser-could-increase-the-performance"><a href="#Why-the-Paraphraser-could-increase-the-performance" class="headerlink" title="Why the Paraphraser could increase the performance"></a>Why the Paraphraser could increase the performance</h1><p>We’ve seen the improvements of performance on a DBpedia based data set and a Yado based data set thanks to Paraphraser. But why it could improve the accuracy with the same trainings steps and the same model (Bi-LSTM) comparing with a data set without Paraphraser?</p>
+<h3 id="Hypothesis-1"><a href="#Hypothesis-1" class="headerlink" title="Hypothesis 1"></a>Hypothesis 1</h3><p>It increases the amount of templates for each relation and entity (Tripling the template size), so each entity and relation have more examples to be learnt.</p>
+<h5 id="Experiment-1"><a href="#Experiment-1" class="headerlink" title="Experiment 1"></a>Experiment 1</h5><p>Copy the templates 2 times in plus, so the size of templates equals to the ones with Paraphraser.</p>
+<h5 id="Result-of-Accuracy"><a href="#Result-of-Accuracy" class="headerlink" title="Result of Accuracy:"></a>Result of Accuracy:</h5><p><img src="/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/tripled_acc.png" alt><br>Figure 1. Accuracy of Original data set<br><img src="/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/paraphrased_acc.png" alt><br>Figure 2. Accuracy of Paraphrased data set</p>
+<p>We could see that Original (size tripled) data set could also reach a similar accuracy score (&gt;70), except that it may require more training steps. The slower training could be explicated later.<br>However, when I tested the Paraphrased model on the original test set, the accuracy only gives 42. This result would be explicated in the next paragraph.</p>
+<h5 id="Other-statistics"><a href="#Other-statistics" class="headerlink" title="Other statistics"></a>Other statistics</h5><p>There are 587936 samples for each of the two data sets (Paraphrased and Tripled data sets), nearly 103000 entities appear in the two data sets, which means approximately 5 samples per entity on average, and this could ensure the final performance of the translation.<br>However, among the 103000 entities in the original data set, there are about 54000 entities that don’t appear in the Paraphrased data set. This means a different ensemble of entities between the two data sets and explicates the low accuracy of Paraphrased model on original test set. This line of <a href="https://github.com/dbpedia/neural-qa/blob/696139ecfc9f726604cfbbb3b892e56a6adfeaa4/generator.py#L56" target="_blank" rel="noopener">code</a> could show why there exists a difference.</p>
+<h6 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h6><p>As we have a such large ensemble of entities, each time of training will only pick a subset of them, we should encourage the Generator to pick a much bigger size of the subset in order to cover as many entities as we can. To realize that, we should change a little bit the <a href="https://github.com/dbpedia/neural-qa/blob/696139ecfc9f726604cfbbb3b892e56a6adfeaa4/generator.py#L110" target="_blank" rel="noopener">code of priority</a> here. Changing the <code>1~5 usages</code> to the highest priority and <code>0 usage</code> to the second could be better, as the number of samples per entity on average is 5 and this could ensure that the final accuracy reach 81, which is satisfactory. We should do an experiment if necessary.</p>
+<h3 id="Hypothesis-2"><a href="#Hypothesis-2" class="headerlink" title="Hypothesis 2"></a>Hypothesis 2</h3><p>The second hypothesis is the basic idea of the Paraphraser: it could help match the relation/predicated by adding variation to the original templates</p>
+<h5 id="Experiment-2"><a href="#Experiment-2" class="headerlink" title="Experiment 2"></a>Experiment 2</h5><p>As the accuracy is no longer a proper metric of evaluation, and the test set of the original data set is not a good choice neither because of the different ensemble of entities, I chose <a href="https://github.com/ag-sc/QALD/tree/master/9/data" target="_blank" rel="noopener">qald-9-test</a> as a test set and count the number of matched relations. To be fair, I only picked single Basic-Graph-Pattern questions whose relation exists in out data set.</p>
+<h5 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h5><p>Among the 30 samples of simple BGP questions whose relation appears in the data set, the Paraphrased model could match 9 of them correctly; whereas the Original model predicts 4 of them correctly. We could say that the Paraphraser double the final performance at the level of matching relations.</p>
+<h5 id="Other-statistics-1"><a href="#Other-statistics-1" class="headerlink" title="Other statistics"></a>Other statistics</h5><p>The synonym in the paraphrasing procedure is necessary to help with the performance, because we could not totally count on the embeddings to cover automatically the synonyms of expressions.<br>I have checked the cosine similarity of synonymous expression in our GloVe.6B.200d pre-trained embeddings and found:</p>
 <blockquote>
-<p>Non paraphrased: 27 mis-matches of relation<br>Paraphrased: 25 mis-matches of relation</p>
+<p>“husband” and “spouse”<br>0.6033827158132323</p>
+<p>“wife” and “spouse”<br>0.5476363820234046</p>
+<p>“writer” and “author”<br>0.778833813581239</p>
+<p>“profession” and “occupation”<br>0.25730224462480544</p>
 </blockquote>
-<p>We could see the 2 less mis-matches thanks to the Paraphraser for simple questions as below:</p>
+<p>These kind of “not similar” synonym pairs has caused many mis-matched relations. The performance of embeddings should be better to help with the synonyms, otherwise, the synonyms should be handled with Paraphraser.</p>
+<h3 id="Hypothesis-3"><a href="#Hypothesis-3" class="headerlink" title="Hypothesis 3"></a>Hypothesis 3</h3><p>The Paraphraser could also help with the matching of entities.</p>
+<h5 id="Experiment-2-1"><a href="#Experiment-2-1" class="headerlink" title="Experiment 2"></a>Experiment 2</h5><p>It’s the same experiment with the last one.</p>
+<h5 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h5><p>Intuitively, this assumption is wrong because the Paraphraser only paraphrases templates, which means it doesn’t change any entities, so the matching of entities should be the same. In fact, I didn’t agree with this hypothesis neither at first, but here comes some results:<br><strong>The prefixes are removed and some expressions are decoded to simplify the comparison</strong></p>
 <blockquote>
-<p>what is angela merkel’s birth name ?<br>select var_x where brack_open dbr_Adunis dbo_birthPlace var_x brack_close<br>select var_x where brack_open dbr_Angela_Lansbury dbo_birthName var_x brack_close</p>
-<p>who is the husband of amanda palmer ?<br>select var_x where brack_open dbr_Justin_Timberlake dbo_partner var_x brack_close<br>select var_x where brack_open dbr_Amanda_Holden dbo_spouse var_x brack_close</p>
+<p>Natural Language question: “Who was influenced by Socrates?”<br>Ground True Query: “SELECT DISTINCT ?uri WHERE { ?uri dbo:influencedBy dbr:Socrates&gt; }”<br>Original model: “SELECT ?uri WHERE { dbr:James_Allen_(Virginia_delegate) dbo:foundingYear ?uri }”<br>Paraphrased model: “SELECT ?uri WHERE { dbr:Socrates dbo:influencedBy ?uri }”</p>
 </blockquote>
-<p>There are more examples that the Paraphraser helps with the match of relation/predicate.</p>
+<p>We could see that the paraphrased model predicts correctly both the relation and the entity, except for the order because our templates of SPARQL quries all follow the same order; whereas the original model predicts neither of them.</p>
 <blockquote>
-<p>how many years was the ford model t manufactured ?<br>select var_x where brack_open dbr_Speedland:_The_Premium_Best_Re_Tracks dbo_activeYears var_x brack_close<br>select var_x where brack_open dbr_Ford_LCF dbo_productionStartYear var_x brack_close</p>
-<p>which poet wrote the most books ?<br>select var_x where brack_open dbr_Way_of_the_Samurai_2 dbo_composer var_x brack_close<br>select var_x where brack_open dbr_Notes_(application) dbo_author var_x brack_close</p>
+<p>Natural Language question: “How many awards has Bertrand Russell?”<br>Ground True Query: “SELECT (COUNT(?Awards) AS ?Counter) WHERE { dbr:Bertrand_Russell dbp:awards ?Awards }”<br>Original model: “SELECT ?uri WHERE { dbr:KTPX-TV dbo:subregion ?Awards }”<br>Paraphrased model: “SELECT ?uri WHERE { dbr:Claude_Bertrand_(neurosurgeon) dbo:award ?Awards }”</p>
 </blockquote>
-<p>We could see that a paraphraser do</p>
-<h3 id="Paraphrased-—DBpedia"><a href="#Paraphrased-—DBpedia" class="headerlink" title="Paraphrased —DBpedia"></a>Paraphrased —DBpedia</h3><h3 id="Ambiguity"><a href="#Ambiguity" class="headerlink" title="Ambiguity?"></a>Ambiguity?</h3><p> A user question can describe an<br>entity, using one of its labels (e.g. Apple), while the underlying source(s) may use<br>a different one (e.g. Macintosh), resulting to mismatches.<br>Apart from synonyms, we have the problem of homonyms, i.e. there are different<br>entities that share the same name (e.g. Washington may refer either to the capital state or to the first President of the U.S.A.).</p>
-<h3 id="Type-of-questions"><a href="#Type-of-questions" class="headerlink" title="Type of questions"></a>Type of questions</h3><p>Only factoid questions (What\\When\\Where)</p>
-<h3 id="Domain"><a href="#Domain" class="headerlink" title="Domain"></a>Domain</h3><p>respectively Open-domain. Not focused on a single domain.</p>
+<p>We could see that the relation nearly matches, <code>dbo:award</code> with <code>dbp:awards</code>, and the paraphrased model catches part of the entity name <code>Bertrand</code>, where as the original doesn’t catch it at all.</p>
+<h5 id="Conclusion-1"><a href="#Conclusion-1" class="headerlink" title="Conclusion"></a>Conclusion</h5><p>The Paraphraser does help with the matching of entities, which is a little bit contradictory to intuition.<br>A further hypothesis is: The Paraphraser can help with the matching of entities only if the relation is correctly or almost correctly matched. This would be an interesting subject, but it’s harder to be proved, because we have such a large entities. </p>
 
       
 
@@ -199,6 +212,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">gsoc-2020</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -249,7 +273,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/10/11/Thinking-of-the-Paraphraser/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://baiblanc.github.io/2020/10/15/Why-the-Paraphraser-could-increase-the-performance/" alt="微信分享二维码">
     </div>
 </div>
 
